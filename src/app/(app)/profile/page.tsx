@@ -1,40 +1,48 @@
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { ProfileCard } from "@/components/profile/ProfileCard"
-import { Button } from "@/components/ui/button"
-import { Users } from "lucide-react"
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { ProfileCard } from "@/components/profile/ProfileCard";
+import { Button } from "@/components/ui/button";
+import { Users } from "lucide-react";
 
-export const metadata = { title: "My Profile — GradConnect" }
+export const metadata = { title: "My Profile — GradConnect" };
 
 export default async function ProfilePage() {
-  const session = await auth()
-  if (!session?.user?.id) redirect("/sign-in")
+  const session = await auth();
+  if (!session?.user?.id) redirect("/sign-in");
 
   const user = await db.user.findUnique({
     where: { id: session.user.id },
     include: { profile: true },
-  })
+  });
 
-  if (!user) redirect("/sign-in")
+  if (!user) redirect("/sign-in");
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
       <ProfileCard
-        user={{ id: user.id, name: user.name, image: user.image, createdAt: user.createdAt }}
+        user={{
+          id: user.id,
+          name: user.name,
+          image: user.image,
+          createdAt: user.createdAt,
+        }}
         profile={user.profile}
         isOwnProfile
       />
 
-      {/* Prompt to complete profile if major is empty */}
-      {(!user.profile?.major) && (
+      {/* Prompt to complete profile if field/trade is empty */}
+      {!user.profile?.major && (
         <div className="mt-4 rounded-xl border border-violet-500/30 bg-violet-600/10 p-4">
           <p className="text-sm text-violet-300">
             Complete your profile so teammates know what you bring to the table.
           </p>
           <Link href="/profile/edit">
-            <Button size="sm" className="mt-3 bg-violet-600 hover:bg-violet-500 text-white">
+            <Button
+              size="sm"
+              className="mt-3 bg-violet-600 hover:bg-violet-500 text-white"
+            >
               Complete profile
             </Button>
           </Link>
@@ -59,5 +67,5 @@ export default async function ProfilePage() {
         </Link>
       </div>
     </div>
-  )
+  );
 }

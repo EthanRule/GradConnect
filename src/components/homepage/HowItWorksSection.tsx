@@ -1,4 +1,4 @@
-import { UserCircle, Users, Rocket } from "lucide-react"
+import { UserCircle, Users, Rocket } from "lucide-react";
 
 const steps = [
   {
@@ -6,14 +6,14 @@ const steps = [
     icon: UserCircle,
     title: "Build your profile",
     description:
-      "Share your major, skills, and what you want to build. Link your GitHub, LinkedIn, or portfolio so teammates know what you bring to the table.",
+      "Share your field or trade, skills, and what you want to build. Link your GitHub, LinkedIn, or portfolio so teammates know what you bring to the table.",
   },
   {
     number: "02",
     icon: Users,
     title: "Find or create a team",
     description:
-      "Browse open teams looking for your skill set, or post your own idea and invite people from different majors. Max 5 per major keeps teams balanced and diverse.",
+      "Browse open teams looking for your skill set, or post your own idea and invite people from different fields and trades. Max 5 per field/trade keeps teams balanced and diverse.",
   },
   {
     number: "03",
@@ -22,7 +22,7 @@ const steps = [
     description:
       "Your team proposes project ideas and votes on the best one. Connect on Discord, Slack, or Teams — then start building. The AI does the heavy lifting. You provide the direction.",
   },
-]
+];
 
 export function HowItWorksSection() {
   return (
@@ -37,8 +37,8 @@ export function HowItWorksSection() {
             From grad to founder in three steps
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-zinc-400">
-            No experience required. No funding needed to start. Just a team, an idea, and AI
-            as your co-pilot.
+            No experience required. No funding needed to start. Just a team, an
+            idea, and AI as your co-pilot.
           </p>
         </div>
 
@@ -49,7 +49,10 @@ export function HowItWorksSection() {
 
           <div className="grid gap-8 lg:grid-cols-3">
             {steps.map((step) => (
-              <div key={step.number} className="relative flex flex-col items-center text-center">
+              <div
+                key={step.number}
+                className="relative flex flex-col items-center text-center"
+              >
                 {/* Icon circle */}
                 <div className="relative mb-6 flex h-24 w-24 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-600/10">
                   <step.icon className="h-10 w-10 text-violet-400" />
@@ -58,13 +61,17 @@ export function HowItWorksSection() {
                   </span>
                 </div>
 
-                <h3 className="mb-3 text-xl font-semibold text-white">{step.title}</h3>
-                <p className="text-sm leading-relaxed text-zinc-400">{step.description}</p>
+                <h3 className="mb-3 text-xl font-semibold text-white">
+                  {step.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-zinc-400">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

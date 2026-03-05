@@ -1,11 +1,11 @@
-import { redirect, notFound } from "next/navigation"
-import Link from "next/link"
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { JoinGroupButton } from "@/components/groups/JoinGroupButton"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Users, CheckCircle } from "lucide-react"
+import { redirect, notFound } from "next/navigation";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { JoinGroupButton } from "@/components/groups/JoinGroupButton";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Users, CheckCircle } from "lucide-react";
 
 const PLATFORM_LABELS: Record<string, string> = {
   DISCORD: "Discord",
@@ -13,36 +13,36 @@ const PLATFORM_LABELS: Record<string, string> = {
   MICROSOFT_TEAMS: "Microsoft Teams",
   WHATSAPP: "WhatsApp",
   TELEGRAM: "Telegram",
-}
+};
 
 type Params = {
-  params: Promise<{ groupId: string }>
-  searchParams: Promise<{ token?: string }>
-}
+  params: Promise<{ groupId: string }>;
+  searchParams: Promise<{ token?: string }>;
+};
 
 export default async function InvitePage({ params, searchParams }: Params) {
-  const { groupId } = await params
-  const { token } = await searchParams
+  const { groupId } = await params;
+  const { token } = await searchParams;
 
-  if (!token) notFound()
+  if (!token) notFound();
 
-  const session = await auth()
+  const session = await auth();
   if (!session?.user?.id) {
-    redirect(`/sign-in?callbackUrl=/groups/${groupId}/invite?token=${token}`)
+    redirect(`/sign-in?callbackUrl=/groups/${groupId}/invite?token=${token}`);
   }
 
   const group = await db.group.findUnique({
     where: { id: groupId, inviteToken: token },
     include: { _count: { select: { members: true } } },
-  })
+  });
 
-  if (!group) notFound()
+  if (!group) notFound();
 
   // Already a member → redirect to group
   const existing = await db.groupMember.findUnique({
     where: { groupId_userId: { groupId, userId: session.user.id } },
-  })
-  if (existing) redirect(`/groups/${groupId}`)
+  });
+  if (existing) redirect(`/groups/${groupId}`);
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center px-4">
@@ -54,8 +54,8 @@ export default async function InvitePage({ params, searchParams }: Params) {
 
           <h1 className="text-xl font-bold text-white">You&apos;re invited!</h1>
           <p className="mt-1 text-sm text-zinc-400">
-            Join <span className="font-semibold text-white">{group.name}</span> on
-            GradConnect
+            Join <span className="font-semibold text-white">{group.name}</span>{" "}
+            on GradConnect
           </p>
 
           <div className="mt-5 rounded-xl border border-white/10 bg-zinc-800/50 p-4 text-left space-y-2">
@@ -79,7 +79,8 @@ export default async function InvitePage({ params, searchParams }: Params) {
               </Badge>
             </div>
             <p className="text-xs text-zinc-600">
-              {group._count.members} / {group.maxMembers} members · max {group.maxPerMajor} per major
+              {group._count.members} / {group.maxMembers} members · max{" "}
+              {group.maxPerMajor} per field / trade
             </p>
           </div>
 
@@ -114,5 +115,5 @@ export default async function InvitePage({ params, searchParams }: Params) {
         </div>
       </div>
     </div>
-  )
+  );
 }

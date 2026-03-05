@@ -1,23 +1,26 @@
-import { notFound } from "next/navigation"
-import Link from "next/link"
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { MemberCard } from "@/components/groups/MemberCard"
-import { InviteSection } from "@/components/groups/InviteSection"
-import { IdeaCard } from "@/components/ideas/IdeaCard"
-import { PostIdeaForm } from "@/components/ideas/PostIdeaForm"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Settings, ExternalLink, Github } from "lucide-react"
-import { JoinGroupButton } from "@/components/groups/JoinGroupButton"
-import { LeaveGroupButton } from "@/components/groups/LeaveGroupButton"
-import { KickMemberButton } from "@/components/groups/KickMemberButton"
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { MemberCard } from "@/components/groups/MemberCard";
+import { InviteSection } from "@/components/groups/InviteSection";
+import { IdeaCard } from "@/components/ideas/IdeaCard";
+import { PostIdeaForm } from "@/components/ideas/PostIdeaForm";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Settings, ExternalLink, Github } from "lucide-react";
+import { JoinGroupButton } from "@/components/groups/JoinGroupButton";
+import { LeaveGroupButton } from "@/components/groups/LeaveGroupButton";
+import { KickMemberButton } from "@/components/groups/KickMemberButton";
 
 const AI_USAGE_LABELS: Record<string, { label: string; className: string }> = {
   AI: { label: "AI", className: "bg-blue-500/15 text-blue-400" },
-  AI_HYBRID: { label: "AI Hybrid", className: "bg-amber-500/15 text-amber-400" },
+  AI_HYBRID: {
+    label: "AI Hybrid",
+    className: "bg-amber-500/15 text-amber-400",
+  },
   NO_AI: { label: "No AI", className: "bg-zinc-800 text-zinc-500" },
-}
+};
 
 const PLATFORM_LABELS: Record<string, string> = {
   DISCORD: "Discord",
@@ -25,13 +28,13 @@ const PLATFORM_LABELS: Record<string, string> = {
   MICROSOFT_TEAMS: "Microsoft Teams",
   WHATSAPP: "WhatsApp",
   TELEGRAM: "Telegram",
-}
+};
 
-type Params = { params: Promise<{ groupId: string }> }
+type Params = { params: Promise<{ groupId: string }> };
 
 export default async function GroupDetailPage({ params }: Params) {
-  const { groupId } = await params
-  const session = await auth()
+  const { groupId } = await params;
+  const session = await auth();
 
   const group = await db.group.findUnique({
     where: { id: groupId },
@@ -60,15 +63,15 @@ export default async function GroupDetailPage({ params }: Params) {
         orderBy: { votes: { _count: "desc" } },
       },
     },
-  })
+  });
 
-  if (!group) notFound()
+  if (!group) notFound();
 
   const myMembership = session?.user?.id
     ? group.members.find((m) => m.userId === session!.user!.id)
-    : null
-  const isMember = !!myMembership
-  const isCreator = myMembership?.role === "CREATOR"
+    : null;
+  const isMember = !!myMembership;
+  const isCreator = myMembership?.role === "CREATOR";
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -123,7 +126,8 @@ export default async function GroupDetailPage({ params }: Params) {
               {PLATFORM_LABELS[group.platform] ?? group.platform}
             </Badge>
             <span className="text-sm text-zinc-500">
-              {group._count.members} / {group.maxMembers} members · max {group.maxPerMajor} per major
+              {group._count.members} / {group.maxMembers} members · max{" "}
+              {group.maxPerMajor} per field / trade
             </span>
           </div>
         </div>
@@ -146,14 +150,15 @@ export default async function GroupDetailPage({ params }: Params) {
           )}
           {!session?.user?.id && group.isOpen && (
             <Link href={`/sign-in?callbackUrl=/groups/${groupId}`}>
-              <Button className="bg-violet-600 hover:bg-violet-500 text-white" size="sm">
+              <Button
+                className="bg-violet-600 hover:bg-violet-500 text-white"
+                size="sm"
+              >
                 Join Team
               </Button>
             </Link>
           )}
-          {isMember && !isCreator && (
-            <LeaveGroupButton groupId={groupId} />
-          )}
+          {isMember && !isCreator && <LeaveGroupButton groupId={groupId} />}
         </div>
       </div>
 
@@ -256,5 +261,5 @@ export default async function GroupDetailPage({ params }: Params) {
         </div>
       </div>
     </div>
-  )
+  );
 }

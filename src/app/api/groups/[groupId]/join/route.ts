@@ -1,81 +1,98 @@
-import { NextResponse } from "next/server"
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { sendGroupFullEmail } from "@/lib/email"
+import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { sendGroupFullEmail } from "@/lib/email";
 
-type Params = { params: Promise<{ groupId: string }> }
+type Params = { params: Promise<{ groupId: string }> };
 
 export async function POST(req: Request, { params }: Params) {
-  const session = await auth()
+  const session = await auth();
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { groupId } = await params
-  const body = await req.json().catch(() => ({}))
-  const { token } = body as { token?: string }
+  const { groupId } = await params;
+  const body = await req.json().catch(() => ({}));
+  const { token } = body as { token?: string };
 
   const group = await db.group.findUnique({
     where: { id: groupId },
     include: {
       members: {
-        include: { user: { include: { profile: { select: { major: true } } } } },
+        include: {
+          user: { include: { profile: { select: { major: true } } } },
+        },
       },
     },
-  })
+  });
 
-  if (!group) return NextResponse.json({ error: "Group not found" }, { status: 404 })
+  if (!group)
+    return NextResponse.json({ error: "Group not found" }, { status: 404 });
 
   // Token provided → validate it; no token → require group to be open
   if (token) {
     if (group.inviteToken !== token) {
-      return NextResponse.json({ error: "Invalid invite link" }, { status: 403 })
+      return NextResponse.json(
+        { error: "Invalid invite link" },
+        { status: 403 },
+      );
     }
   } else if (!group.isOpen) {
-    return NextResponse.json({ error: "This group is not accepting new members" }, { status: 403 })
+    return NextResponse.json(
+      { error: "This group is not accepting new members" },
+      { status: 403 },
+    );
   }
 
   // Already a member?
-  const alreadyMember = group.members.some((m) => m.userId === session.user!.id)
+  const alreadyMember = group.members.some(
+    (m) => m.userId === session.user!.id,
+  );
   if (alreadyMember) {
-    return NextResponse.json({ error: "Already a member" }, { status: 409 })
+    return NextResponse.json({ error: "Already a member" }, { status: 409 });
   }
 
   // Member cap
   if (group.members.length >= group.maxMembers) {
-    return NextResponse.json({ error: "This group is full" }, { status: 409 })
+    return NextResponse.json({ error: "This group is full" }, { status: 409 });
   }
 
-  // Major cap
-  const userProfile = await db.profile.findUnique({ where: { userId: session.user.id } })
+  // Field/trade cap
+  const userProfile = await db.profile.findUnique({
+    where: { userId: session.user.id },
+  });
   if (userProfile?.major) {
     const majorCount = group.members.filter(
-      (m) => m.user.profile?.major === userProfile.major
-    ).length
+      (m) => m.user.profile?.major === userProfile.major,
+    ).length;
     if (majorCount >= group.maxPerMajor) {
       return NextResponse.json(
         {
-          error: `This group already has ${group.maxPerMajor} members with the same major (${userProfile.major})`,
+          error: `This group already has ${group.maxPerMajor} members with the same field/trade (${userProfile.major})`,
         },
-        { status: 409 }
-      )
+        { status: 409 },
+      );
     }
   }
 
   // Add member
   const member = await db.groupMember.create({
     data: { groupId, userId: session.user.id },
-  })
+  });
 
   // Check if now full → send email (idempotent via filledNotifiedAt)
-  const newCount = group.members.length + 1
+  const newCount = group.members.length + 1;
   if (newCount >= group.maxMembers) {
-    const updates: { isOpen: boolean; filledNotifiedAt?: Date } = { isOpen: false }
+    const updates: { isOpen: boolean; filledNotifiedAt?: Date } = {
+      isOpen: false,
+    };
 
     if (!group.filledNotifiedAt) {
-      const creator = group.members.find((m) => m.role === "CREATOR")
+      const creator = group.members.find((m) => m.role === "CREATOR");
       if (creator) {
-        const creatorUser = await db.user.findUnique({ where: { id: creator.userId } })
+        const creatorUser = await db.user.findUnique({
+          where: { id: creator.userId },
+        });
         if (creatorUser?.email) {
           await sendGroupFullEmail({
             to: creatorUser.email,
@@ -83,14 +100,14 @@ export async function POST(req: Request, { params }: Params) {
             groupName: group.name,
             groupUrl: `${process.env.NEXTAUTH_URL}/groups/${groupId}`,
             memberCount: group.maxMembers,
-          })
-          updates.filledNotifiedAt = new Date()
+          });
+          updates.filledNotifiedAt = new Date();
         }
       }
     }
 
-    await db.group.update({ where: { id: groupId }, data: updates })
+    await db.group.update({ where: { id: groupId }, data: updates });
   }
 
-  return NextResponse.json(member, { status: 201 })
+  return NextResponse.json(member, { status: 201 });
 }

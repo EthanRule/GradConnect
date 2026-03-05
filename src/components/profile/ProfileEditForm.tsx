@@ -1,42 +1,42 @@
-"use client"
+"use client";
 
-import { useState, useEffect, KeyboardEvent } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
+import { useState, KeyboardEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Loader2, X } from "lucide-react"
-import { toast } from "sonner"
-import { MAJOR_OPTIONS } from "@/lib/validations"
+} from "@/components/ui/select";
+import { Loader2, X } from "lucide-react";
+import { toast } from "sonner";
+import { FIELD_OPTIONS } from "@/lib/validations";
 
 type ProfileData = {
-  name: string
-  bio: string
-  major: string
-  skills: string[]
-  linkedin: string
-  github: string
-  twitter: string
-  website: string
-}
+  name: string;
+  bio: string;
+  major: string;
+  skills: string[];
+  linkedin: string;
+  github: string;
+  twitter: string;
+  website: string;
+};
 
 type Props = {
-  initialData?: Partial<ProfileData> & { name?: string | null }
-}
+  initialData?: Partial<ProfileData> & { name?: string | null };
+};
 
 export function ProfileEditForm({ initialData }: Props) {
-  const router = useRouter()
-  const [saving, setSaving] = useState(false)
-  const [skillInput, setSkillInput] = useState("")
+  const router = useRouter();
+  const [saving, setSaving] = useState(false);
+  const [skillInput, setSkillInput] = useState("");
 
   const [form, setForm] = useState<ProfileData>({
     name: initialData?.name ?? "",
@@ -47,74 +47,63 @@ export function ProfileEditForm({ initialData }: Props) {
     github: initialData?.github ?? "",
     twitter: initialData?.twitter ?? "",
     website: initialData?.website ?? "",
-  })
-
-  useEffect(() => {
-    if (initialData) {
-      setForm({
-        name: initialData.name ?? "",
-        bio: initialData.bio ?? "",
-        major: initialData.major ?? "",
-        skills: initialData.skills ?? [],
-        linkedin: initialData.linkedin ?? "",
-        github: initialData.github ?? "",
-        twitter: initialData.twitter ?? "",
-        website: initialData.website ?? "",
-      })
-    }
-  }, [initialData])
+  });
 
   function set(field: keyof ProfileData, value: string | string[]) {
-    setForm((prev) => ({ ...prev, [field]: value }))
+    setForm((prev) => ({ ...prev, [field]: value }));
   }
 
   function addSkill() {
-    const trimmed = skillInput.trim()
-    if (!trimmed || form.skills.includes(trimmed) || form.skills.length >= 20) return
-    set("skills", [...form.skills, trimmed])
-    setSkillInput("")
+    const trimmed = skillInput.trim();
+    if (!trimmed || form.skills.includes(trimmed) || form.skills.length >= 20)
+      return;
+    set("skills", [...form.skills, trimmed]);
+    setSkillInput("");
   }
 
   function removeSkill(skill: string) {
-    set("skills", form.skills.filter((s) => s !== skill))
+    set(
+      "skills",
+      form.skills.filter((s) => s !== skill),
+    );
   }
 
   function handleSkillKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault()
-      addSkill()
+      e.preventDefault();
+      addSkill();
     }
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!form.name.trim()) {
-      toast.error("Name is required.")
-      return
+      toast.error("Name is required.");
+      return;
     }
     if (!form.major) {
-      toast.error("Please select your major.")
-      return
+      toast.error("Please select your field or trade.");
+      return;
     }
 
-    setSaving(true)
+    setSaving(true);
     const res = await fetch("/api/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
-    })
-    setSaving(false)
+    });
+    setSaving(false);
 
     if (!res.ok) {
-      const data = await res.json()
-      toast.error(data.error ?? "Failed to save profile.")
-      return
+      const data = await res.json();
+      toast.error(data.error ?? "Failed to save profile.");
+      return;
     }
 
-    toast.success("Profile saved!")
-    router.push("/profile")
-    router.refresh()
+    toast.success("Profile saved!");
+    router.push("/profile");
+    router.refresh();
   }
 
   return (
@@ -134,19 +123,19 @@ export function ProfileEditForm({ initialData }: Props) {
         />
       </div>
 
-      {/* Major */}
+      {/* Field / Trade */}
       <div className="space-y-2">
         <Label className="text-zinc-300">
-          Major / Field <span className="text-red-400">*</span>
+          Field / Trade <span className="text-red-400">*</span>
         </Label>
         <Select value={form.major} onValueChange={(v) => set("major", v)}>
           <SelectTrigger className="border-white/15 bg-white/5 text-white focus:ring-violet-500">
-            <SelectValue placeholder="Select your major..." />
+            <SelectValue placeholder="Select your field or trade..." />
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto">
-            {MAJOR_OPTIONS.map((major) => (
-              <SelectItem key={major} value={major}>
-                {major}
+            {FIELD_OPTIONS.map((field) => (
+              <SelectItem key={field} value={field}>
+                {field}
               </SelectItem>
             ))}
           </SelectContent>
@@ -155,7 +144,9 @@ export function ProfileEditForm({ initialData }: Props) {
 
       {/* Bio */}
       <div className="space-y-2">
-        <Label htmlFor="bio" className="text-zinc-300">Bio</Label>
+        <Label htmlFor="bio" className="text-zinc-300">
+          Bio
+        </Label>
         <Textarea
           id="bio"
           value={form.bio}
@@ -165,7 +156,9 @@ export function ProfileEditForm({ initialData }: Props) {
           rows={3}
           className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500 resize-none"
         />
-        <p className="text-right text-xs text-zinc-600">{form.bio.length}/500</p>
+        <p className="text-right text-xs text-zinc-600">
+          {form.bio.length}/500
+        </p>
       </div>
 
       {/* Skills */}
@@ -213,10 +206,14 @@ export function ProfileEditForm({ initialData }: Props) {
 
       {/* Social links */}
       <div className="space-y-4">
-        <p className="text-sm font-medium text-zinc-300">Links <span className="text-zinc-600">(optional)</span></p>
+        <p className="text-sm font-medium text-zinc-300">
+          Links <span className="text-zinc-600">(optional)</span>
+        </p>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor="github" className="text-xs text-zinc-500">GitHub URL</Label>
+            <Label htmlFor="github" className="text-xs text-zinc-500">
+              GitHub URL
+            </Label>
             <Input
               id="github"
               value={form.github}
@@ -226,7 +223,9 @@ export function ProfileEditForm({ initialData }: Props) {
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="linkedin" className="text-xs text-zinc-500">LinkedIn URL</Label>
+            <Label htmlFor="linkedin" className="text-xs text-zinc-500">
+              LinkedIn URL
+            </Label>
             <Input
               id="linkedin"
               value={form.linkedin}
@@ -236,7 +235,9 @@ export function ProfileEditForm({ initialData }: Props) {
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="twitter" className="text-xs text-zinc-500">Twitter / X URL</Label>
+            <Label htmlFor="twitter" className="text-xs text-zinc-500">
+              Twitter / X URL
+            </Label>
             <Input
               id="twitter"
               value={form.twitter}
@@ -246,7 +247,9 @@ export function ProfileEditForm({ initialData }: Props) {
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="website" className="text-xs text-zinc-500">Website URL</Label>
+            <Label htmlFor="website" className="text-xs text-zinc-500">
+              Website URL
+            </Label>
             <Input
               id="website"
               value={form.website}
@@ -267,5 +270,5 @@ export function ProfileEditForm({ initialData }: Props) {
         Save profile
       </Button>
     </form>
-  )
+  );
 }

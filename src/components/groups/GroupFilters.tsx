@@ -1,55 +1,55 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { useState, useMemo } from "react";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { GroupCard } from "@/components/groups/GroupCard"
-import { MAJOR_OPTIONS } from "@/lib/validations"
+} from "@/components/ui/select";
+import { GroupCard } from "@/components/groups/GroupCard";
+import { FIELD_OPTIONS } from "@/lib/validations";
 
 type Group = {
-  id: string
-  name: string
-  description: string | null
-  platform: string
-  projectType: string | null
-  isOpen: boolean
-  maxMembers: number
-  maxPerMajor: number
-  lookingForMajors: string[]
-  aiUsage: string
-  githubRepo?: string | null
-  _count: { members: number }
+  id: string;
+  name: string;
+  description: string | null;
+  platform: string;
+  projectType: string | null;
+  isOpen: boolean;
+  maxMembers: number;
+  maxPerMajor: number;
+  lookingForMajors: string[];
+  aiUsage: string;
+  githubRepo?: string | null;
+  _count: { members: number };
   members: {
     user: {
-      profile: { major: string } | null
-    }
-  }[]
-}
+      profile: { major: string } | null;
+    };
+  }[];
+};
 
 export function GroupFilters({ groups }: { groups: Group[] }) {
-  const [search, setSearch] = useState("")
-  const [major, setMajor] = useState("all")
+  const [search, setSearch] = useState("");
+  const [major, setMajor] = useState("all");
 
   const filtered = useMemo(() => {
     return groups.filter((g) => {
       const matchesSearch =
-        !search || g.name.toLowerCase().includes(search.toLowerCase())
+        !search || g.name.toLowerCase().includes(search.toLowerCase());
 
       const matchesMajor =
         major === "all" ||
         g.members.filter((m) => m.user.profile?.major === major).length <
-          g.maxPerMajor
+          g.maxPerMajor;
 
-      return matchesSearch && matchesMajor
-    })
-  }, [groups, search, major])
+      return matchesSearch && matchesMajor;
+    });
+  }, [groups, search, major]);
 
   return (
     <div>
@@ -66,13 +66,13 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
 
         <Select value={major} onValueChange={setMajor}>
           <SelectTrigger className="w-full sm:w-56 bg-zinc-900/60 border-white/10 text-white">
-            <SelectValue placeholder="Filter by your major" />
+            <SelectValue placeholder="Filter by your field" />
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
             <SelectItem value="all" className="focus:bg-white/10">
-              All majors
+              All fields / trades
             </SelectItem>
-            {MAJOR_OPTIONS.map((m) => (
+            {FIELD_OPTIONS.map((m) => (
               <SelectItem key={m} value={m} className="focus:bg-white/10">
                 {m}
               </SelectItem>
@@ -93,5 +93,5 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
         </div>
       )}
     </div>
-  )
+  );
 }

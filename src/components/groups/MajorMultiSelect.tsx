@@ -1,40 +1,38 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Search, X, Check } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { MAJOR_OPTIONS } from "@/lib/validations"
+import { useState } from "react";
+import { Search, X, Check } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { FIELD_OPTIONS } from "@/lib/validations";
 
 type Props = {
-  selected: string[]
-  onChange: (majors: string[]) => void
-  label?: string
-}
+  selected: string[];
+  onChange: (majors: string[]) => void;
+  label?: string;
+};
 
 export function MajorMultiSelect({ selected, onChange, label }: Props) {
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
 
-  const filtered = MAJOR_OPTIONS.filter(
-    (m) => m.toLowerCase().includes(search.toLowerCase())
-  )
+  const filtered = FIELD_OPTIONS.filter((m) =>
+    m.toLowerCase().includes(search.toLowerCase()),
+  );
 
   function toggle(major: string) {
     if (selected.includes(major)) {
-      onChange(selected.filter((m) => m !== major))
+      onChange(selected.filter((m) => m !== major));
     } else {
-      onChange([...selected, major])
+      onChange([...selected, major]);
     }
   }
 
   function remove(major: string) {
-    onChange(selected.filter((m) => m !== major))
+    onChange(selected.filter((m) => m !== major));
   }
 
   return (
     <div className="space-y-2">
-      {label && (
-        <p className="text-sm text-zinc-300">{label}</p>
-      )}
+      {label && <p className="text-sm text-zinc-300">{label}</p>}
 
       {/* Selected badges */}
       {selected.length > 0 && (
@@ -65,7 +63,7 @@ export function MajorMultiSelect({ selected, onChange, label }: Props) {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search majors..."
+          placeholder="Search fields or trades..."
           className="w-full rounded-md border border-white/10 bg-zinc-800 py-1.5 pl-8 pr-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
         />
       </div>
@@ -73,10 +71,12 @@ export function MajorMultiSelect({ selected, onChange, label }: Props) {
       {/* Options list */}
       <div className="max-h-44 overflow-y-auto rounded-lg border border-white/10 bg-zinc-800/60">
         {filtered.length === 0 ? (
-          <p className="px-3 py-2 text-xs text-zinc-500">No majors found</p>
+          <p className="px-3 py-2 text-xs text-zinc-500">
+            No fields or trades found
+          </p>
         ) : (
           filtered.map((m) => {
-            const isSelected = selected.includes(m)
+            const isSelected = selected.includes(m);
             return (
               <button
                 key={m}
@@ -97,10 +97,10 @@ export function MajorMultiSelect({ selected, onChange, label }: Props) {
                 </div>
                 {m}
               </button>
-            )
+            );
           })
         )}
       </div>
     </div>
-  )
+  );
 }

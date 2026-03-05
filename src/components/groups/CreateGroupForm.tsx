@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { PROJECT_TYPES, AI_USAGE_OPTIONS } from "@/lib/validations"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect"
+} from "@/components/ui/select";
+import { PROJECT_TYPES, AI_USAGE_OPTIONS } from "@/lib/validations";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect";
 
 const PLATFORMS = [
   { value: "DISCORD", label: "Discord" },
@@ -24,27 +24,27 @@ const PLATFORMS = [
   { value: "MICROSOFT_TEAMS", label: "Microsoft Teams" },
   { value: "WHATSAPP", label: "WhatsApp" },
   { value: "TELEGRAM", label: "Telegram" },
-] as const
+] as const;
 
-const STEP_TITLES = ["Team basics", "Your project idea", "Communication"]
-const TOTAL_STEPS = 3
+const STEP_TITLES = ["Team basics", "Your project idea", "Communication"];
+const TOTAL_STEPS = 3;
 
 type FormData = {
-  name: string
-  description: string
-  initialProjectIdea: string
-  projectType: string
-  aiUsage: string
-  platform: string
-  platformLink: string
-  githubRepo: string
-  lookingForMajors: string[]
-}
+  name: string;
+  description: string;
+  initialProjectIdea: string;
+  projectType: string;
+  aiUsage: string;
+  platform: string;
+  platformLink: string;
+  githubRepo: string;
+  lookingForMajors: string[];
+};
 
 export function CreateGroupForm() {
-  const router = useRouter()
-  const [step, setStep] = useState(1)
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<FormData>({
     name: "",
     description: "",
@@ -55,21 +55,21 @@ export function CreateGroupForm() {
     platformLink: "",
     githubRepo: "",
     lookingForMajors: [],
-  })
+  });
 
   function set(field: keyof FormData, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }))
+    setForm((prev) => ({ ...prev, [field]: value }));
   }
 
   function canAdvance() {
-    if (step === 1) return form.name.trim().length > 0
-    if (step === 2) return form.initialProjectIdea.trim().length >= 10
-    if (step === 3) return form.platform !== ""
-    return false
+    if (step === 1) return form.name.trim().length > 0;
+    if (step === 2) return form.initialProjectIdea.trim().length >= 10;
+    if (step === 3) return form.platform !== "";
+    return false;
   }
 
   async function handleSubmit() {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await fetch("/api/groups", {
         method: "POST",
@@ -85,21 +85,21 @@ export function CreateGroupForm() {
           aiUsage: form.aiUsage || undefined,
           githubRepo: form.githubRepo || undefined,
         }),
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.error ?? "Failed to create team")
-        return
+        toast.error(data.error ?? "Failed to create team");
+        return;
       }
 
-      toast.success("Team created!")
-      router.push(`/groups/${data.id}`)
+      toast.success("Team created!");
+      router.push(`/groups/${data.id}`);
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -157,11 +157,13 @@ export function CreateGroupForm() {
           <div className="space-y-1.5">
             <MajorMultiSelect
               selected={form.lookingForMajors}
-              onChange={(majors) => setForm((f) => ({ ...f, lookingForMajors: majors }))}
-              label="Looking for these majors (optional)"
+              onChange={(majors) =>
+                setForm((f) => ({ ...f, lookingForMajors: majors }))
+              }
+              label="Looking for these fields / trades (optional)"
             />
             <p className="text-xs text-zinc-600">
-              Let prospective members know which fields you need.
+              Let prospective members know which fields or trades you need.
             </p>
           </div>
         </div>
@@ -174,7 +176,10 @@ export function CreateGroupForm() {
             <Label htmlFor="projectType" className="text-zinc-300">
               Project type <span className="text-zinc-600">(optional)</span>
             </Label>
-            <Select value={form.projectType} onValueChange={(v) => set("projectType", v)}>
+            <Select
+              value={form.projectType}
+              onValueChange={(v) => set("projectType", v)}
+            >
               <SelectTrigger className="bg-zinc-800 border-white/10 text-white">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
@@ -316,5 +321,5 @@ export function CreateGroupForm() {
         )}
       </div>
     </div>
-  )
+  );
 }

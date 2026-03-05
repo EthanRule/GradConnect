@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export function FinalCTA() {
   return (
@@ -22,8 +22,9 @@ export function FinalCTA() {
           </span>
         </h2>
         <p className="mb-10 text-lg text-zinc-400">
-          Every month you wait is a month another team ships. The AI tools are here. The
-          market is open. The only thing missing is the right group of people around you.
+          Every month you wait is a month another team ships. The AI tools are
+          here. The market is open. The only thing missing is the right group of
+          people around you.
         </p>
 
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -48,9 +49,9 @@ export function FinalCTA() {
         </div>
 
         <p className="mt-6 text-sm text-zinc-600">
-          Free forever · Open source · Max 20 per team · Max 5 per major
+          Free forever · Open source · Max 20 per team · Max 5 per field / trade
         </p>
       </div>
     </section>
-  )
+  );
 }

@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { PROJECT_TYPES, AI_USAGE_OPTIONS } from "@/lib/validations"
-import { Separator } from "@/components/ui/separator"
-import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect"
+} from "@/components/ui/select";
+import { PROJECT_TYPES, AI_USAGE_OPTIONS } from "@/lib/validations";
+import { Separator } from "@/components/ui/separator";
+import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect";
 
 const PLATFORMS = [
   { value: "DISCORD", label: "Discord" },
@@ -24,26 +24,28 @@ const PLATFORMS = [
   { value: "MICROSOFT_TEAMS", label: "Microsoft Teams" },
   { value: "WHATSAPP", label: "WhatsApp" },
   { value: "TELEGRAM", label: "Telegram" },
-] as const
+] as const;
 
 type Group = {
-  id: string
-  name: string
-  description: string | null
-  initialProjectIdea: string
-  projectType: string | null
-  platform: string
-  platformLink: string | null
-  lookingForMajors: string[]
-  aiUsage: string
-  githubRepo: string | null
-}
+  id: string;
+  name: string;
+  description: string | null;
+  initialProjectIdea: string;
+  projectType: string | null;
+  platform: string;
+  platformLink: string | null;
+  lookingForMajors: string[];
+  aiUsage: string;
+  githubRepo: string | null;
+};
 
 export function GroupSettingsForm({ group }: { group: Group }) {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [deleting, setDeleting] = useState(false)
-  const [lookingForMajors, setLookingForMajors] = useState<string[]>(group.lookingForMajors)
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [lookingForMajors, setLookingForMajors] = useState<string[]>(
+    group.lookingForMajors,
+  );
   const [form, setForm] = useState({
     name: group.name,
     description: group.description ?? "",
@@ -53,15 +55,15 @@ export function GroupSettingsForm({ group }: { group: Group }) {
     platformLink: group.platformLink ?? "",
     aiUsage: group.aiUsage,
     githubRepo: group.githubRepo ?? "",
-  })
+  });
 
   function set(field: keyof typeof form, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }))
+    setForm((prev) => ({ ...prev, [field]: value }));
   }
 
   async function save(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
       const res = await fetch(`/api/groups/${group.id}`, {
         method: "PATCH",
@@ -77,37 +79,38 @@ export function GroupSettingsForm({ group }: { group: Group }) {
           aiUsage: form.aiUsage || undefined,
           githubRepo: form.githubRepo || undefined,
         }),
-      })
-      const data = await res.json()
+      });
+      const data = await res.json();
       if (!res.ok) {
-        toast.error(data.error ?? "Failed to save")
-        return
+        toast.error(data.error ?? "Failed to save");
+        return;
       }
-      toast.success("Settings saved")
-      router.refresh()
+      toast.success("Settings saved");
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   async function deleteGroup() {
-    if (!confirm("Delete this team permanently? This cannot be undone.")) return
-    setDeleting(true)
+    if (!confirm("Delete this team permanently? This cannot be undone."))
+      return;
+    setDeleting(true);
     try {
-      const res = await fetch(`/api/groups/${group.id}`, { method: "DELETE" })
+      const res = await fetch(`/api/groups/${group.id}`, { method: "DELETE" });
       if (!res.ok) {
-        const data = await res.json()
-        toast.error(data.error ?? "Failed to delete")
-        return
+        const data = await res.json();
+        toast.error(data.error ?? "Failed to delete");
+        return;
       }
-      toast.success("Team deleted")
-      router.push("/dashboard")
+      toast.success("Team deleted");
+      router.push("/dashboard");
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     } finally {
-      setDeleting(false)
+      setDeleting(false);
     }
   }
 
@@ -115,7 +118,9 @@ export function GroupSettingsForm({ group }: { group: Group }) {
     <form onSubmit={save} className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6 space-y-5">
         <div className="space-y-1.5">
-          <Label htmlFor="name" className="text-zinc-300">Team name</Label>
+          <Label htmlFor="name" className="text-zinc-300">
+            Team name
+          </Label>
           <Input
             id="name"
             value={form.name}
@@ -127,7 +132,9 @@ export function GroupSettingsForm({ group }: { group: Group }) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="desc" className="text-zinc-300">Description</Label>
+          <Label htmlFor="desc" className="text-zinc-300">
+            Description
+          </Label>
           <Textarea
             id="desc"
             value={form.description}
@@ -139,7 +146,9 @@ export function GroupSettingsForm({ group }: { group: Group }) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="idea" className="text-zinc-300">Initial project idea</Label>
+          <Label htmlFor="idea" className="text-zinc-300">
+            Initial project idea
+          </Label>
           <Textarea
             id="idea"
             value={form.initialProjectIdea}
@@ -153,13 +162,18 @@ export function GroupSettingsForm({ group }: { group: Group }) {
 
         <div className="space-y-1.5">
           <Label className="text-zinc-300">Project type</Label>
-          <Select value={form.projectType} onValueChange={(v) => set("projectType", v)}>
+          <Select
+            value={form.projectType}
+            onValueChange={(v) => set("projectType", v)}
+          >
             <SelectTrigger className="bg-zinc-800 border-white/10 text-white">
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
               {PROJECT_TYPES.map((t) => (
-                <SelectItem key={t} value={t} className="focus:bg-white/10">{t}</SelectItem>
+                <SelectItem key={t} value={t} className="focus:bg-white/10">
+                  {t}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -187,13 +201,20 @@ export function GroupSettingsForm({ group }: { group: Group }) {
 
         <div className="space-y-1.5">
           <Label className="text-zinc-300">Platform</Label>
-          <Select value={form.platform} onValueChange={(v) => set("platform", v)}>
+          <Select
+            value={form.platform}
+            onValueChange={(v) => set("platform", v)}
+          >
             <SelectTrigger className="bg-zinc-800 border-white/10 text-white">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
               {PLATFORMS.map((p) => (
-                <SelectItem key={p.value} value={p.value} className="focus:bg-white/10">
+                <SelectItem
+                  key={p.value}
+                  value={p.value}
+                  className="focus:bg-white/10"
+                >
                   {p.label}
                 </SelectItem>
               ))}
@@ -202,7 +223,9 @@ export function GroupSettingsForm({ group }: { group: Group }) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="githubRepo" className="text-zinc-300">GitHub repo</Label>
+          <Label htmlFor="githubRepo" className="text-zinc-300">
+            GitHub repo
+          </Label>
           <Input
             id="githubRepo"
             value={form.githubRepo}
@@ -213,13 +236,15 @@ export function GroupSettingsForm({ group }: { group: Group }) {
         </div>
 
         <MajorMultiSelect
-          label="Looking for these majors"
+          label="Looking for these fields / trades"
           selected={lookingForMajors}
           onChange={setLookingForMajors}
         />
 
         <div className="space-y-1.5">
-          <Label htmlFor="link" className="text-zinc-300">Platform invite link</Label>
+          <Label htmlFor="link" className="text-zinc-300">
+            Platform invite link
+          </Label>
           <Input
             id="link"
             value={form.platformLink}
@@ -256,5 +281,5 @@ export function GroupSettingsForm({ group }: { group: Group }) {
         </Button>
       </div>
     </form>
-  )
+  );
 }

@@ -1,51 +1,62 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { ThumbsUp, Trash2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useVote } from "@/hooks/useVote"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import Image from "next/image";
+import { ThumbsUp, Trash2 } from "lucide-react";
+import { useVote } from "@/hooks/useVote";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type IdeaCardProps = {
-  groupId: string
+  groupId: string;
   idea: {
-    id: string
-    title: string
-    description: string
-    author: { id: string; name: string | null; image: string | null }
-    _count: { votes: number }
-    votes: { userId: string }[]
-  }
-  currentUserId: string | null
-  isCreator: boolean
-}
+    id: string;
+    title: string;
+    description: string;
+    author: { id: string; name: string | null; image: string | null };
+    _count: { votes: number };
+    votes: { userId: string }[];
+  };
+  currentUserId: string | null;
+  isCreator: boolean;
+};
 
-export function IdeaCard({ groupId, idea, currentUserId, isCreator }: IdeaCardProps) {
-  const router = useRouter()
-  const hasVoted = idea.votes.some((v) => v.userId === currentUserId)
+export function IdeaCard({
+  groupId,
+  idea,
+  currentUserId,
+  isCreator,
+}: IdeaCardProps) {
+  const router = useRouter();
+  const hasVoted = idea.votes.some((v) => v.userId === currentUserId);
 
-  const { count, hasVoted: voted, toggle, loading } = useVote(groupId, idea.id, {
+  const {
+    count,
+    hasVoted: voted,
+    toggle,
+    loading,
+  } = useVote(groupId, idea.id, {
     count: idea._count.votes,
     hasVoted,
-  })
+  });
 
-  const isAuthor = idea.author.id === currentUserId
+  const isAuthor = idea.author.id === currentUserId;
 
   async function deleteIdea() {
     try {
       const res = await fetch(`/api/groups/${groupId}/ideas/${idea.id}`, {
         method: "DELETE",
-      })
+      });
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        toast.error((data as { error?: string }).error ?? "Failed to delete idea")
-        return
+        const data = await res.json().catch(() => ({}));
+        toast.error(
+          (data as { error?: string }).error ?? "Failed to delete idea",
+        );
+        return;
       }
-      toast.success("Idea deleted")
-      router.refresh()
+      toast.success("Idea deleted");
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   }
 
@@ -56,7 +67,7 @@ export function IdeaCard({ groupId, idea, currentUserId, isCreator }: IdeaCardPr
         .join("")
         .toUpperCase()
         .slice(0, 2)
-    : "?"
+    : "?";
 
   return (
     <div className="rounded-xl border border-white/10 bg-zinc-900/40 p-4">
@@ -70,7 +81,13 @@ export function IdeaCard({ groupId, idea, currentUserId, isCreator }: IdeaCardPr
               ? "bg-violet-600/25 text-violet-300"
               : "bg-zinc-800/60 text-zinc-500 hover:bg-zinc-800 hover:text-white"
           } disabled:cursor-not-allowed`}
-          title={currentUserId ? (voted ? "Remove vote" : "Vote for this idea") : "Sign in to vote"}
+          title={
+            currentUserId
+              ? voted
+                ? "Remove vote"
+                : "Vote for this idea"
+              : "Sign in to vote"
+          }
         >
           <ThumbsUp className={`h-4 w-4 ${voted ? "fill-violet-400" : ""}`} />
           <span className="text-xs">{count}</span>
@@ -116,5 +133,5 @@ export function IdeaCard({ groupId, idea, currentUserId, isCreator }: IdeaCardPr
         </div>
       </div>
     </div>
-  )
+  );
 }

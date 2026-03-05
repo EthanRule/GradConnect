@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Settings, ExternalLink } from "lucide-react"
 import { JoinGroupButton } from "@/components/groups/JoinGroupButton"
+import { LeaveGroupButton } from "@/components/groups/LeaveGroupButton"
+import { KickMemberButton } from "@/components/groups/KickMemberButton"
 
 const PLATFORM_LABELS: Record<string, string> = {
   DISCORD: "Discord",
@@ -135,6 +137,9 @@ export default async function GroupDetailPage({ params }: Params) {
               </Button>
             </Link>
           )}
+          {isMember && !isCreator && (
+            <LeaveGroupButton groupId={groupId} />
+          )}
         </div>
       </div>
 
@@ -193,7 +198,19 @@ export default async function GroupDetailPage({ params }: Params) {
           </h2>
           <div className="space-y-2">
             {group.members.map((member) => (
-              <MemberCard key={member.id} member={member} />
+              <MemberCard
+                key={member.id}
+                member={member}
+                kickButton={
+                  isCreator && member.role !== "CREATOR" ? (
+                    <KickMemberButton
+                      groupId={groupId}
+                      userId={member.userId}
+                      userName={member.user.name ?? "this member"}
+                    />
+                  ) : undefined
+                }
+              />
             ))}
           </div>
 

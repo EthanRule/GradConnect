@@ -17,9 +17,10 @@ type MemberCardProps = {
       } | null
     }
   }
+  kickButton?: React.ReactNode
 }
 
-export function MemberCard({ member }: MemberCardProps) {
+export function MemberCard({ member, kickButton }: MemberCardProps) {
   const { user, role } = member
   const initials = user.name
     ? user.name
@@ -31,6 +32,8 @@ export function MemberCard({ member }: MemberCardProps) {
     : "?"
 
   return (
+    <div className="relative">
+      {kickButton}
     <Link href={`/users/${user.id}`}>
       <div className="group flex items-start gap-3 rounded-xl border border-white/10 bg-zinc-900/40 p-4 transition-colors hover:border-violet-500/30 hover:bg-violet-600/5">
         {/* Avatar */}
@@ -86,5 +89,6 @@ export function MemberCard({ member }: MemberCardProps) {
         </div>
       </div>
     </Link>
+    </div>
   )
 }

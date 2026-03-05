@@ -294,6 +294,7 @@ export function CreateGroupForm() {
       {/* Navigation */}
       <div className="mt-6 flex items-center justify-between">
         <Button
+          type="button"
           variant="ghost"
           onClick={() => setStep((s) => s - 1)}
           disabled={step === 1}
@@ -305,6 +306,7 @@ export function CreateGroupForm() {
 
         {step < TOTAL_STEPS ? (
           <Button
+            type="button"
             onClick={() => setStep((s) => s + 1)}
             disabled={!canAdvance()}
             className="bg-amber-600 hover:bg-amber-500 text-white"
@@ -314,6 +316,7 @@ export function CreateGroupForm() {
           </Button>
         ) : (
           <Button
+            type="button"
             onClick={handleSubmit}
             disabled={!canAdvance() || loading}
             className="bg-amber-600 hover:bg-amber-500 text-white"

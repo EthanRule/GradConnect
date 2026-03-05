@@ -97,7 +97,10 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
           <SelectTrigger className="w-full bg-zinc-900/60 border-white/10 text-white">
             <SelectValue placeholder="Filter by your field" />
           </SelectTrigger>
-          <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
+          <SelectContent
+            position="popper"
+            className="max-h-60 bg-zinc-900 border-white/10 text-white"
+          >
             <SelectItem value="all" className="focus:bg-white/10">
               All fields / trades
             </SelectItem>
@@ -113,7 +116,10 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
           <SelectTrigger className="w-full bg-zinc-900/60 border-white/10 text-white">
             <SelectValue placeholder="Project type" />
           </SelectTrigger>
-          <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
+          <SelectContent
+            position="popper"
+            className="max-h-60 bg-zinc-900 border-white/10 text-white"
+          >
             <SelectItem value="all">All project types</SelectItem>
             {projectTypes.map((type) => (
               <SelectItem key={type} value={type}>
@@ -127,7 +133,10 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
           <SelectTrigger className="w-full bg-zinc-900/60 border-white/10 text-white">
             <SelectValue placeholder="AI usage" />
           </SelectTrigger>
-          <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
+          <SelectContent
+            position="popper"
+            className="max-h-60 bg-zinc-900 border-white/10 text-white"
+          >
             <SelectItem value="all">All AI styles</SelectItem>
             {aiOptions.map((value) => (
               <SelectItem key={value} value={value}>
@@ -141,7 +150,10 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
           <SelectTrigger className="w-full bg-zinc-900/60 border-white/10 text-white">
             <SelectValue placeholder="Platform" />
           </SelectTrigger>
-          <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
+          <SelectContent
+            position="popper"
+            className="max-h-60 bg-zinc-900 border-white/10 text-white"
+          >
             <SelectItem value="all">All platforms</SelectItem>
             {platformOptions.map((value) => (
               <SelectItem key={value} value={value}>

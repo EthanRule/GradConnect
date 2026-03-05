@@ -133,7 +133,7 @@ export function ProfileEditForm({ initialData, returnTo }: Props) {
           <SelectTrigger className="border-white/15 bg-white/5 text-white focus:ring-amber-500">
             <SelectValue placeholder="Select your field or trade..." />
           </SelectTrigger>
-          <SelectContent className="max-h-60 overflow-y-auto">
+          <SelectContent position="popper" className="max-h-60">
             {FIELD_OPTIONS.map((field) => (
               <SelectItem key={field} value={field}>
                 {field}

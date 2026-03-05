@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { trackServerEvent } from "@/lib/analytics";
 import { applyRateLimit, getClientIp } from "@/lib/rate-limit";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
 const schema = z.object({
   targetType: z.enum(["USER", "GROUP"]),
@@ -13,6 +14,9 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -81,3 +85,4 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ ok: true }, { status: 201 });
 }
+

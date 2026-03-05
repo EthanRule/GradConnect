@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { profileSchema } from "@/lib/validations";
 import { isProfileBuildReady } from "@/lib/profile";
 import { trackServerEvent } from "@/lib/analytics";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
 export async function GET() {
   const session = await auth();
@@ -20,6 +21,9 @@ export async function GET() {
 }
 
 export async function PUT(req: Request) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -71,3 +75,4 @@ export async function PUT(req: Request) {
 
   return NextResponse.json(profile);
 }
+

@@ -6,6 +6,7 @@ import { isProfileBuildReady } from "@/lib/profile";
 import { applyRateLimit, getClientIp } from "@/lib/rate-limit";
 import { trackServerEvent } from "@/lib/analytics";
 import { hasFieldCapacity } from "@/lib/group-rules";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -41,6 +42,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -121,3 +125,4 @@ export async function POST(req: Request) {
 
   return NextResponse.json(group, { status: 201 });
 }
+

@@ -1,33 +1,38 @@
-import { NextResponse } from "next/server"
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
+import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
-type Params = { params: Promise<{ groupId: string; ideaId: string }> }
+type Params = { params: Promise<{ groupId: string; ideaId: string }> };
 
-export async function DELETE(_: Request, { params }: Params) {
-  const session = await auth()
+export async function DELETE(req: Request, { params }: Params) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
+  const session = await auth();
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { groupId, ideaId } = await params
+  const { groupId, ideaId } = await params;
 
-  const idea = await db.projectIdea.findUnique({ where: { id: ideaId } })
+  const idea = await db.projectIdea.findUnique({ where: { id: ideaId } });
   if (!idea || idea.groupId !== groupId) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 })
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
   // Author can delete their own idea; creator can delete any
   if (idea.authorId !== session.user.id) {
     const membership = await db.groupMember.findUnique({
       where: { groupId_userId: { groupId, userId: session.user.id } },
-    })
+    });
     if (!membership || membership.role !== "CREATOR") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   }
 
-  await db.projectIdea.delete({ where: { id: ideaId } })
+  await db.projectIdea.delete({ where: { id: ideaId } });
 
-  return new NextResponse(null, { status: 204 })
+  return new NextResponse(null, { status: 204 });
 }
+

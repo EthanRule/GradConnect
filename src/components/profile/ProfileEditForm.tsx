@@ -17,6 +17,7 @@ import {
 import { Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { FIELD_OPTIONS } from "@/lib/validations";
+import { sanitizeInternalPath } from "@/lib/security";
 
 type ProfileData = {
   name: string;
@@ -38,6 +39,7 @@ export function ProfileEditForm({ initialData, returnTo }: Props) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [skillInput, setSkillInput] = useState("");
+  const safeReturnTo = sanitizeInternalPath(returnTo, "/profile");
 
   const [form, setForm] = useState<ProfileData>({
     name: initialData?.name ?? "",
@@ -103,7 +105,7 @@ export function ProfileEditForm({ initialData, returnTo }: Props) {
     }
 
     toast.success("Profile saved!");
-    router.push(returnTo || "/profile");
+    router.push(safeReturnTo);
     router.refresh();
   }
 

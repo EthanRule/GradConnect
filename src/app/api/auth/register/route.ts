@@ -4,9 +4,13 @@ import { db } from "@/lib/db";
 import { signUpSchema } from "@/lib/validations";
 import { applyRateLimit, getClientIp } from "@/lib/rate-limit";
 import { trackServerEvent } from "@/lib/analytics";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
 export async function POST(req: Request) {
   try {
+    const originError = verifyMutationOrigin(req);
+    if (originError) return originError;
+
     const ip = getClientIp(req);
     const rl = applyRateLimit(`register:${ip}`, 20, 60 * 60 * 1000);
     if (!rl.ok) {
@@ -31,7 +35,7 @@ export async function POST(req: Request) {
     const existing = await db.user.findUnique({ where: { email } });
     if (existing) {
       return NextResponse.json(
-        { error: "An account with this email already exists." },
+        { error: "Unable to create account with provided credentials." },
         { status: 409 },
       );
     }
@@ -59,3 +63,4 @@ export async function POST(req: Request) {
     );
   }
 }
+

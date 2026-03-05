@@ -6,10 +6,14 @@ import { isProfileBuildReady } from "@/lib/profile";
 import { applyRateLimit, getClientIp } from "@/lib/rate-limit";
 import { trackServerEvent } from "@/lib/analytics";
 import { hasFieldCapacity } from "@/lib/group-rules";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
 type Params = { params: Promise<{ groupId: string }> };
 
 export async function POST(req: Request, { params }: Params) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -137,3 +141,4 @@ export async function POST(req: Request, { params }: Params) {
 
   return NextResponse.json(member, { status: 201 });
 }
+

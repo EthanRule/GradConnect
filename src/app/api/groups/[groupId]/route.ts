@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { groupSchema } from "@/lib/validations";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
 type Params = { params: Promise<{ groupId: string }> };
 
@@ -47,6 +48,9 @@ export async function GET(_req: Request, { params }: Params) {
 }
 
 export async function PATCH(req: Request, { params }: Params) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -83,7 +87,10 @@ export async function PATCH(req: Request, { params }: Params) {
   return NextResponse.json(group);
 }
 
-export async function DELETE(_req: Request, { params }: Params) {
+export async function DELETE(req: Request, { params }: Params) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -102,3 +109,4 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   return new NextResponse(null, { status: 204 });
 }
+

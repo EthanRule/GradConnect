@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { trackServerEvent } from "@/lib/analytics";
 import { applyRateLimit, getClientIp } from "@/lib/rate-limit";
+import { verifyMutationOrigin } from "@/lib/security-server";
 
 const schema = z.object({
   event: z.enum([
@@ -16,6 +17,9 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const originError = verifyMutationOrigin(req);
+  if (originError) return originError;
+
   const ip = getClientIp(req);
   const limited = applyRateLimit(`events:${ip}`, 120, 60_000);
   if (!limited.ok) {
@@ -34,3 +38,4 @@ export async function POST(req: Request) {
   await trackServerEvent(parsed.data.event, null, parsed.data.properties ?? {});
   return NextResponse.json({ ok: true });
 }
+

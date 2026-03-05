@@ -1,6 +1,8 @@
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY ?? "placeholder")
+}
 
 const FROM = process.env.EMAIL_FROM ?? "onboarding@resend.dev"
 
@@ -17,7 +19,7 @@ export async function sendGroupFullEmail({
   groupUrl: string
   memberCount: number
 }) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: `Your GradConnect team "${groupName}" is full!`,

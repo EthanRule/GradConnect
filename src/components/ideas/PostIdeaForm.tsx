@@ -1,44 +1,46 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Lightbulb } from "lucide-react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Lightbulb } from "lucide-react";
+import { trackClientEvent } from "@/lib/analytics";
 
 export function PostIdeaForm({ groupId }: { groupId: string }) {
-  const router = useRouter()
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   async function submit(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
       const res = await fetch(`/api/groups/${groupId}/ideas`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description }),
-      })
-      const data = await res.json()
+      });
+      const data = await res.json();
       if (!res.ok) {
-        toast.error(data.error ?? "Failed to post idea")
-        return
+        toast.error(data.error ?? "Failed to post idea");
+        return;
       }
-      toast.success("Idea posted!")
-      setTitle("")
-      setDescription("")
-      setOpen(false)
-      router.refresh()
+      toast.success("Idea posted!");
+      trackClientEvent("idea_posted", { groupId });
+      setTitle("");
+      setDescription("");
+      setOpen(false);
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -52,7 +54,7 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
         <Lightbulb className="mr-2 h-4 w-4" />
         Post a project idea
       </Button>
-    )
+    );
   }
 
   return (
@@ -102,13 +104,16 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
         </Button>
         <Button
           type="submit"
-          disabled={loading || title.trim().length === 0 || description.trim().length < 10}
+          disabled={
+            loading ||
+            title.trim().length === 0 ||
+            description.trim().length < 10
+          }
           className="bg-amber-600 hover:bg-amber-500 text-white"
         >
           {loading ? "Posting..." : "Post idea"}
         </Button>
       </div>
     </form>
-  )
+  );
 }
-

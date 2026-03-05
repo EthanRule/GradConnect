@@ -1,36 +1,44 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { trackClientEvent } from "@/lib/analytics";
 
-export function JoinGroupButton({ groupId, token }: { groupId: string; token?: string }) {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
+export function JoinGroupButton({
+  groupId,
+  token,
+}: {
+  groupId: string;
+  token?: string;
+}) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   async function join() {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await fetch(`/api/groups/${groupId}/join`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(token ? { token } : {}),
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.error ?? "Failed to join team")
-        return
+        toast.error(data.error ?? "Failed to join team");
+        return;
       }
 
-      toast.success("You joined the team!")
-      router.refresh()
+      toast.success("You joined the team!");
+      trackClientEvent("team_joined", { groupId });
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -43,6 +51,5 @@ export function JoinGroupButton({ groupId, token }: { groupId: string; token?: s
     >
       {loading ? "Joining..." : "Join Team"}
     </Button>
-  )
+  );
 }
-

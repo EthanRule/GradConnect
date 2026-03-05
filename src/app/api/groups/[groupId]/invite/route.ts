@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { randomUUID } from "crypto"
+import { applyRateLimit, getClientIp } from "@/lib/rate-limit"
 
 type Params = { params: Promise<{ groupId: string }> }
 
@@ -30,10 +31,18 @@ export async function GET(_: Request, { params }: Params) {
 }
 
 // POST — regenerate invite token (creator only)
-export async function POST(_: Request, { params }: Params) {
+export async function POST(req: Request, { params }: Params) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+  const ip = getClientIp(req)
+  const rl = applyRateLimit(`regen-invite:${session.user.id}:${ip}`, 20, 60 * 60 * 1000)
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many invite regenerations. Please try again later." },
+      { status: 429 }
+    )
   }
 
   const { groupId } = await params

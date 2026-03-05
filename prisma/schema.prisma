@@ -27,6 +27,18 @@ enum AiUsage {
   NO_AI
 }
 
+enum ReportTargetType {
+  USER
+  GROUP
+}
+
+enum ReportStatus {
+  OPEN
+  REVIEWED
+  DISMISSED
+  ACTIONED
+}
+
 // ── Auth.js required models ──────────────────────────────────────────────────
 
 model User {
@@ -45,6 +57,7 @@ model User {
   groupMembers GroupMember[]
   projectIdeas ProjectIdea[]
   votes        Vote[]
+  reportsFiled Report[]      @relation("ReportReporter")
 }
 
 model Account {
@@ -161,4 +174,21 @@ model Vote {
   user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([ideaId, userId])
+}
+
+model Report {
+  id             String           @id @default(cuid())
+  reporterUserId String
+  targetType     ReportTargetType
+  targetId       String
+  reason         String
+  details        String?          @db.Text
+  status         ReportStatus     @default(OPEN)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  reporter User  @relation("ReportReporter", fields: [reporterUserId], references: [id], onDelete: Cascade)
+
+  @@index([targetType, targetId])
+  @@index([status, createdAt])
 }

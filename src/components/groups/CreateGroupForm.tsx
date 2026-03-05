@@ -17,6 +17,7 @@ import {
 import { PROJECT_TYPES, AI_USAGE_OPTIONS } from "@/lib/validations";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect";
+import { trackClientEvent } from "@/lib/analytics";
 
 const PLATFORMS = [
   { value: "DISCORD", label: "Discord" },
@@ -95,6 +96,7 @@ export function CreateGroupForm() {
       }
 
       toast.success("Team created!");
+      trackClientEvent("team_created", { groupId: data.id });
       router.push(`/groups/${data.id}`);
     } catch {
       toast.error("Something went wrong");
@@ -323,4 +325,3 @@ export function CreateGroupForm() {
     </div>
   );
 }
-

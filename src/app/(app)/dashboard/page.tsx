@@ -1,25 +1,95 @@
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { Button } from "@/components/ui/button"
-import { Users, Plus } from "lucide-react"
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { Button } from "@/components/ui/button";
+import { Users, Plus, CheckCircle2, Circle } from "lucide-react";
+import { isProfileBuildReady } from "@/lib/profile";
+import { sortGroupsByMatch } from "@/lib/matching";
+import { GroupCard } from "@/components/groups/GroupCard";
 
-export const metadata = { title: "Dashboard — GradConnect" }
+export const metadata = { title: "Dashboard — GradConnect" };
 
 export default async function DashboardPage() {
-  const session = await auth()
-  if (!session?.user?.id) redirect("/sign-in")
+  const session = await auth();
+  if (!session?.user?.id) redirect("/sign-in");
 
-  const memberships = await db.groupMember.findMany({
-    where: { userId: session.user.id },
-    include: {
-      group: {
-        include: { _count: { select: { members: true } } },
+  const [profile, memberships, ideasPosted, openGroups] = await Promise.all([
+    db.profile.findUnique({
+      where: { userId: session.user.id },
+      select: { major: true, skills: true },
+    }),
+    db.groupMember.findMany({
+      where: { userId: session.user.id },
+      include: {
+        group: {
+          include: { _count: { select: { members: true } } },
+        },
       },
+      orderBy: { joinedAt: "desc" },
+    }),
+    db.projectIdea.count({ where: { authorId: session.user.id } }),
+    db.group.findMany({
+      where: {
+        isOpen: true,
+        members: { none: { userId: session.user.id } },
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        platform: true,
+        projectType: true,
+        isOpen: true,
+        maxMembers: true,
+        maxPerMajor: true,
+        lookingForMajors: true,
+        aiUsage: true,
+        githubRepo: true,
+        _count: { select: { members: true } },
+        members: {
+          select: {
+            user: { select: { profile: { select: { major: true } } } },
+          },
+          orderBy: { joinedAt: "asc" },
+          take: 20,
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 100,
+    }),
+  ]);
+
+  const checklist = [
+    {
+      id: "profile",
+      label: "Complete your profile",
+      done: isProfileBuildReady(profile),
+      href: "/profile/edit",
     },
-    orderBy: { joinedAt: "desc" },
-  })
+    {
+      id: "team",
+      label: "Join or create a team",
+      done: memberships.length > 0,
+      href:
+        memberships.length > 0
+          ? `/groups/${memberships[0]!.group.id}`
+          : "/groups",
+    },
+    {
+      id: "idea",
+      label: "Post your first project idea",
+      done: ideasPosted > 0,
+      href:
+        memberships.length > 0
+          ? `/groups/${memberships[0]!.group.id}`
+          : "/groups",
+    },
+  ] as const;
+
+  const recommendations = sortGroupsByMatch(openGroups, profile)
+    .filter((entry) => entry.match.score > 0)
+    .slice(0, 3);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -37,6 +107,58 @@ export default async function DashboardPage() {
           </Button>
         </Link>
       </div>
+
+      <div className="mb-8 rounded-2xl border border-white/10 bg-zinc-900/60 p-5">
+        <div className="mb-3">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+            Getting Started
+          </h2>
+          <p className="text-sm text-zinc-500">
+            Finish these to activate your account and get better team matches.
+          </p>
+        </div>
+        <div className="grid gap-2">
+          {checklist.map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              className="flex items-center justify-between rounded-lg border border-white/8 bg-zinc-950/40 px-3 py-2 hover:bg-white/5"
+            >
+              <div className="flex items-center gap-2">
+                {item.done ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                ) : (
+                  <Circle className="h-4 w-4 text-zinc-500" />
+                )}
+                <span className={item.done ? "text-zinc-300" : "text-zinc-400"}>
+                  {item.label}
+                </span>
+              </div>
+              <span className="text-xs text-zinc-500">
+                {item.done ? "Done" : "Open"}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {recommendations.length > 0 && (
+        <div className="mb-8">
+          <div className="mb-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+              Recommended Teams
+            </h2>
+            <p className="text-sm text-zinc-500">
+              Ranked for your field/trade and current team fit.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {recommendations.map(({ group }) => (
+              <GroupCard key={group.id} group={group} />
+            ))}
+          </div>
+        </div>
+      )}
 
       {memberships.length === 0 ? (
         <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-12 text-center">
@@ -77,12 +199,20 @@ export default async function DashboardPage() {
                   )}
                 </div>
                 {group.description && (
-                  <p className="mt-1 line-clamp-2 text-sm text-zinc-400">{group.description}</p>
+                  <p className="mt-1 line-clamp-2 text-sm text-zinc-400">
+                    {group.description}
+                  </p>
                 )}
                 <div className="mt-3 flex items-center gap-3 text-xs text-zinc-500">
-                  <span>{group._count.members} / {group.maxMembers} members</span>
+                  <span>
+                    {group._count.members} / {group.maxMembers} members
+                  </span>
                   <span>·</span>
-                  <span className={group.isOpen ? "text-green-400" : "text-zinc-500"}>
+                  <span
+                    className={
+                      group.isOpen ? "text-green-400" : "text-zinc-500"
+                    }
+                  >
                     {group.isOpen ? "Open" : "Full"}
                   </span>
                 </div>
@@ -92,6 +222,5 @@ export default async function DashboardPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
-

@@ -31,9 +31,10 @@ type ProfileData = {
 
 type Props = {
   initialData?: Partial<ProfileData> & { name?: string | null };
+  returnTo?: string;
 };
 
-export function ProfileEditForm({ initialData }: Props) {
+export function ProfileEditForm({ initialData, returnTo }: Props) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [skillInput, setSkillInput] = useState("");
@@ -102,7 +103,7 @@ export function ProfileEditForm({ initialData }: Props) {
     }
 
     toast.success("Profile saved!");
-    router.push("/profile");
+    router.push(returnTo || "/profile");
     router.refresh();
   }
 
@@ -272,4 +273,3 @@ export function ProfileEditForm({ initialData }: Props) {
     </form>
   );
 }
-

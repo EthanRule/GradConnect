@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sendGroupFullEmail } from "@/lib/email";
+import { isProfileBuildReady } from "@/lib/profile";
+import { applyRateLimit, getClientIp } from "@/lib/rate-limit";
+import { trackServerEvent } from "@/lib/analytics";
+import { hasFieldCapacity } from "@/lib/group-rules";
 
 type Params = { params: Promise<{ groupId: string }> };
 
@@ -14,6 +18,18 @@ export async function POST(req: Request, { params }: Params) {
   const { groupId } = await params;
   const body = await req.json().catch(() => ({}));
   const { token } = body as { token?: string };
+  const ip = getClientIp(req);
+  const rl = applyRateLimit(
+    `join-group:${session.user.id}:${ip}`,
+    40,
+    60 * 60 * 1000,
+  );
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many join attempts. Please try again later." },
+      { status: 429 },
+    );
+  }
 
   const group = await db.group.findUnique({
     where: { id: groupId },
@@ -61,11 +77,20 @@ export async function POST(req: Request, { params }: Params) {
   const userProfile = await db.profile.findUnique({
     where: { userId: session.user.id },
   });
+  if (!isProfileBuildReady(userProfile)) {
+    return NextResponse.json(
+      {
+        error:
+          "Complete your profile first (field/trade + at least one skill) before joining a team.",
+      },
+      { status: 400 },
+    );
+  }
+
   if (userProfile?.major) {
-    const majorCount = group.members.filter(
-      (m) => m.user.profile?.major === userProfile.major,
-    ).length;
-    if (majorCount >= group.maxPerMajor) {
+    if (
+      !hasFieldCapacity(group.members, userProfile.major, group.maxPerMajor)
+    ) {
       return NextResponse.json(
         {
           error: `This group already has ${group.maxPerMajor} members with the same field/trade (${userProfile.major})`,
@@ -79,6 +104,7 @@ export async function POST(req: Request, { params }: Params) {
   const member = await db.groupMember.create({
     data: { groupId, userId: session.user.id },
   });
+  await trackServerEvent("team_joined", session.user.id, { groupId });
 
   // Check if now full → send email (idempotent via filledNotifiedAt)
   const newCount = group.members.length + 1;

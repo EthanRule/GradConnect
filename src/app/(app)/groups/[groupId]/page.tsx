@@ -12,6 +12,7 @@ import { ArrowLeft, Settings, ExternalLink, Github } from "lucide-react";
 import { JoinGroupButton } from "@/components/groups/JoinGroupButton";
 import { LeaveGroupButton } from "@/components/groups/LeaveGroupButton";
 import { KickMemberButton } from "@/components/groups/KickMemberButton";
+import { ReportDialog } from "@/components/moderation/ReportDialog";
 
 const AI_USAGE_LABELS: Record<string, { label: string; className: string }> = {
   AI: { label: "AI", className: "bg-blue-500/15 text-blue-400" },
@@ -133,6 +134,15 @@ export default async function GroupDetailPage({ params }: Params) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          {session?.user?.id && !isCreator && (
+            <ReportDialog
+              targetType="GROUP"
+              targetId={groupId}
+              targetLabel="team"
+              triggerLabel="Report"
+              className="text-zinc-500 hover:text-red-300"
+            />
+          )}
           {isCreator && (
             <Link href={`/groups/${groupId}/settings`}>
               <Button
@@ -263,4 +273,3 @@ export default async function GroupDetailPage({ params }: Params) {
     </div>
   );
 }
-

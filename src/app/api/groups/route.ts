@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     )
   }
 
-  const { name, description, initialProjectIdea, projectType, platform, platformLink, lookingForMajors } =
+  const { name, description, initialProjectIdea, projectType, platform, platformLink, lookingForMajors, aiUsage, githubRepo } =
     parsed.data
 
   const group = await db.group.create({
@@ -68,6 +68,8 @@ export async function POST(req: Request) {
       platform,
       platformLink,
       lookingForMajors: lookingForMajors ?? [],
+      aiUsage: (aiUsage as "AI" | "AI_HYBRID" | "NO_AI") ?? "AI_HYBRID",
+      githubRepo: githubRepo || null,
       members: {
         create: {
           userId: session.user.id,

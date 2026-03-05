@@ -18,6 +18,8 @@ export default async function GroupsPage() {
       maxMembers: true,
       maxPerMajor: true,
       lookingForMajors: true,
+      aiUsage: true,
+      githubRepo: true,
       _count: { select: { members: true } },
       members: {
         select: {

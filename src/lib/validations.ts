@@ -49,6 +49,14 @@ export const MAJOR_OPTIONS = [
 
 export type Major = (typeof MAJOR_OPTIONS)[number]
 
+export const AI_USAGE_OPTIONS = [
+  { value: "AI", label: "AI — We lean heavily on AI tools" },
+  { value: "AI_HYBRID", label: "AI Hybrid — Mix of AI and manual work" },
+  { value: "NO_AI", label: "No AI — Building it ourselves" },
+] as const
+
+export type AiUsage = (typeof AI_USAGE_OPTIONS)[number]["value"]
+
 export const PROJECT_TYPES = [
   "SaaS",
   "Mobile App",
@@ -83,6 +91,9 @@ export const groupSchema = z.object({
   projectType: z.string().optional(),
   platform: z.enum(["DISCORD", "SLACK", "MICROSOFT_TEAMS", "WHATSAPP", "TELEGRAM"]),
   platformLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  lookingForMajors: z.array(z.string()).max(20).optional(),
+  aiUsage: z.enum(["AI", "AI_HYBRID", "NO_AI"]).optional(),
+  githubRepo: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 })
 
 export const ideaSchema = z.object({

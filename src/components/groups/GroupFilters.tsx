@@ -23,6 +23,8 @@ type Group = {
   maxMembers: number
   maxPerMajor: number
   lookingForMajors: string[]
+  aiUsage: string
+  githubRepo?: string | null
   _count: { members: number }
   members: {
     user: {

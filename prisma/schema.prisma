@@ -21,6 +21,12 @@ enum MemberRole {
   MEMBER
 }
 
+enum AiUsage {
+  AI
+  AI_HYBRID
+  NO_AI
+}
+
 // ── Auth.js required models ──────────────────────────────────────────────────
 
 model User {
@@ -107,6 +113,9 @@ model Group {
   maxMembers         Int                   @default(20)
   maxPerMajor        Int                   @default(5)
   isOpen             Boolean               @default(true)
+  aiUsage            AiUsage               @default(AI_HYBRID)
+  githubRepo         String?
+  lookingForMajors   String[]
   filledNotifiedAt   DateTime?
   createdAt          DateTime              @default(now())
   updatedAt          DateTime              @updatedAt

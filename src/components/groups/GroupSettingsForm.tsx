@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { PROJECT_TYPES } from "@/lib/validations"
+import { PROJECT_TYPES, AI_USAGE_OPTIONS } from "@/lib/validations"
 import { Separator } from "@/components/ui/separator"
 import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect"
 
@@ -35,6 +35,8 @@ type Group = {
   platform: string
   platformLink: string | null
   lookingForMajors: string[]
+  aiUsage: string
+  githubRepo: string | null
 }
 
 export function GroupSettingsForm({ group }: { group: Group }) {
@@ -49,6 +51,8 @@ export function GroupSettingsForm({ group }: { group: Group }) {
     projectType: group.projectType ?? "",
     platform: group.platform,
     platformLink: group.platformLink ?? "",
+    aiUsage: group.aiUsage,
+    githubRepo: group.githubRepo ?? "",
   })
 
   function set(field: keyof typeof form, value: string) {
@@ -70,6 +74,8 @@ export function GroupSettingsForm({ group }: { group: Group }) {
           platform: form.platform,
           platformLink: form.platformLink || undefined,
           lookingForMajors,
+          aiUsage: form.aiUsage || undefined,
+          githubRepo: form.githubRepo || undefined,
         }),
       })
       const data = await res.json()
@@ -160,6 +166,26 @@ export function GroupSettingsForm({ group }: { group: Group }) {
         </div>
 
         <div className="space-y-1.5">
+          <Label className="text-zinc-300">AI usage</Label>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+            {AI_USAGE_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => set("aiUsage", opt.value)}
+                className={`rounded-xl border px-3 py-2.5 text-left text-sm transition-colors ${
+                  form.aiUsage === opt.value
+                    ? "border-violet-500 bg-violet-600/20 text-violet-300"
+                    : "border-white/10 bg-zinc-800/60 text-zinc-400 hover:border-white/20 hover:text-white"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
           <Label className="text-zinc-300">Platform</Label>
           <Select value={form.platform} onValueChange={(v) => set("platform", v)}>
             <SelectTrigger className="bg-zinc-800 border-white/10 text-white">
@@ -173,6 +199,17 @@ export function GroupSettingsForm({ group }: { group: Group }) {
               ))}
             </SelectContent>
           </Select>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="githubRepo" className="text-zinc-300">GitHub repo</Label>
+          <Input
+            id="githubRepo"
+            value={form.githubRepo}
+            onChange={(e) => set("githubRepo", e.target.value)}
+            placeholder="https://github.com/yourteam/project"
+            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+          />
         </div>
 
         <MajorMultiSelect

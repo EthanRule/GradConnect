@@ -8,10 +8,16 @@ import { IdeaCard } from "@/components/ideas/IdeaCard"
 import { PostIdeaForm } from "@/components/ideas/PostIdeaForm"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Settings, ExternalLink } from "lucide-react"
+import { ArrowLeft, Settings, ExternalLink, Github } from "lucide-react"
 import { JoinGroupButton } from "@/components/groups/JoinGroupButton"
 import { LeaveGroupButton } from "@/components/groups/LeaveGroupButton"
 import { KickMemberButton } from "@/components/groups/KickMemberButton"
+
+const AI_USAGE_LABELS: Record<string, { label: string; className: string }> = {
+  AI: { label: "AI", className: "bg-blue-500/15 text-blue-400" },
+  AI_HYBRID: { label: "AI Hybrid", className: "bg-amber-500/15 text-amber-400" },
+  NO_AI: { label: "No AI", className: "bg-zinc-800 text-zinc-500" },
+}
 
 const PLATFORM_LABELS: Record<string, string> = {
   DISCORD: "Discord",
@@ -100,6 +106,14 @@ export default async function GroupDetailPage({ params }: Params) {
                 className="bg-violet-600/15 text-violet-300 border-0"
               >
                 {group.projectType}
+              </Badge>
+            )}
+            {AI_USAGE_LABELS[group.aiUsage] && (
+              <Badge
+                variant="secondary"
+                className={`border-0 ${AI_USAGE_LABELS[group.aiUsage].className}`}
+              >
+                {AI_USAGE_LABELS[group.aiUsage].label}
               </Badge>
             )}
             <Badge
@@ -224,6 +238,19 @@ export default async function GroupDetailPage({ params }: Params) {
             >
               <ExternalLink className="h-4 w-4" />
               Open {PLATFORM_LABELS[group.platform] ?? group.platform}
+            </a>
+          )}
+
+          {/* GitHub repo (visible to all) */}
+          {group.githubRepo && (
+            <a
+              href={group.githubRepo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 p-3 text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              <Github className="h-4 w-4" />
+              View on GitHub
             </a>
           )}
         </div>

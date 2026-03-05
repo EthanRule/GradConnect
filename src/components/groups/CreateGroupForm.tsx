@@ -14,8 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { PROJECT_TYPES } from "@/lib/validations"
+import { PROJECT_TYPES, AI_USAGE_OPTIONS } from "@/lib/validations"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect"
 
 const PLATFORMS = [
   { value: "DISCORD", label: "Discord" },
@@ -33,8 +34,11 @@ type FormData = {
   description: string
   initialProjectIdea: string
   projectType: string
+  aiUsage: string
   platform: string
   platformLink: string
+  githubRepo: string
+  lookingForMajors: string[]
 }
 
 export function CreateGroupForm() {
@@ -46,8 +50,11 @@ export function CreateGroupForm() {
     description: "",
     initialProjectIdea: "",
     projectType: "",
+    aiUsage: "AI_HYBRID",
     platform: "",
     platformLink: "",
+    githubRepo: "",
+    lookingForMajors: [],
   })
 
   function set(field: keyof FormData, value: string) {
@@ -74,6 +81,9 @@ export function CreateGroupForm() {
           projectType: form.projectType || undefined,
           platform: form.platform,
           platformLink: form.platformLink || undefined,
+          lookingForMajors: form.lookingForMajors,
+          aiUsage: form.aiUsage || undefined,
+          githubRepo: form.githubRepo || undefined,
         }),
       })
 
@@ -143,6 +153,17 @@ export function CreateGroupForm() {
               className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500 resize-none"
             />
           </div>
+
+          <div className="space-y-1.5">
+            <MajorMultiSelect
+              selected={form.lookingForMajors}
+              onChange={(majors) => setForm((f) => ({ ...f, lookingForMajors: majors }))}
+              label="Looking for these majors (optional)"
+            />
+            <p className="text-xs text-zinc-600">
+              Let prospective members know which fields you need.
+            </p>
+          </div>
         </div>
       )}
 
@@ -157,7 +178,7 @@ export function CreateGroupForm() {
               <SelectTrigger className="bg-zinc-800 border-white/10 text-white">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
-              <SelectContent className="bg-zinc-900 border-white/10 text-white">
+              <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
                 {PROJECT_TYPES.map((t) => (
                   <SelectItem key={t} value={t} className="focus:bg-white/10">
                     {t}
@@ -165,6 +186,26 @@ export function CreateGroupForm() {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label className="text-zinc-300">AI usage</Label>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              {AI_USAGE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => set("aiUsage", opt.value)}
+                  className={`rounded-xl border px-3 py-2.5 text-left text-sm transition-colors ${
+                    form.aiUsage === opt.value
+                      ? "border-violet-500 bg-violet-600/20 text-violet-300"
+                      : "border-white/10 bg-zinc-800/60 text-zinc-400 hover:border-white/20 hover:text-white"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-1.5">
@@ -224,6 +265,19 @@ export function CreateGroupForm() {
               value={form.platformLink}
               onChange={(e) => set("platformLink", e.target.value)}
               placeholder="https://discord.gg/..."
+              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="githubRepo" className="text-zinc-300">
+              GitHub repo <span className="text-zinc-600">(optional)</span>
+            </Label>
+            <Input
+              id="githubRepo"
+              value={form.githubRepo}
+              onChange={(e) => set("githubRepo", e.target.value)}
+              placeholder="https://github.com/yourteam/project"
               className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
             />
           </div>

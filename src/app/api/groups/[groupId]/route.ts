@@ -69,9 +69,14 @@ export async function PATCH(req: Request, { params }: Params) {
     )
   }
 
+  const { aiUsage, githubRepo, ...rest } = parsed.data
   const group = await db.group.update({
     where: { id: groupId },
-    data: parsed.data,
+    data: {
+      ...rest,
+      ...(aiUsage ? { aiUsage: aiUsage as "AI" | "AI_HYBRID" | "NO_AI" } : {}),
+      githubRepo: githubRepo || null,
+    },
   })
 
   return NextResponse.json(group)

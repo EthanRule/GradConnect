@@ -1,6 +1,12 @@
 import Link from "next/link"
-import { Users, MessageSquare } from "lucide-react"
+import { Users, MessageSquare, Github } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+
+const AI_USAGE_LABELS: Record<string, { label: string; className: string }> = {
+  AI: { label: "AI", className: "bg-blue-500/15 text-blue-400" },
+  AI_HYBRID: { label: "AI Hybrid", className: "bg-amber-500/15 text-amber-400" },
+  NO_AI: { label: "No AI", className: "bg-zinc-800 text-zinc-400" },
+}
 
 const PLATFORM_LABELS: Record<string, string> = {
   DISCORD: "Discord",
@@ -20,6 +26,8 @@ type GroupCardProps = {
     isOpen: boolean
     maxMembers: number
     lookingForMajors: string[]
+    aiUsage: string
+    githubRepo?: string | null
     _count: { members: number }
     members: { user: { profile: { major: string } | null } }[]
   }
@@ -63,6 +71,14 @@ export function GroupCard({ group }: GroupCardProps) {
               {group.projectType}
             </Badge>
           )}
+          {AI_USAGE_LABELS[group.aiUsage] && (
+            <Badge
+              variant="secondary"
+              className={`border-0 text-xs ${AI_USAGE_LABELS[group.aiUsage].className}`}
+            >
+              {AI_USAGE_LABELS[group.aiUsage].label}
+            </Badge>
+          )}
           <Badge
             variant="secondary"
             className="bg-zinc-800 text-zinc-400 border-0 text-xs"
@@ -70,6 +86,12 @@ export function GroupCard({ group }: GroupCardProps) {
             <MessageSquare className="mr-1 h-3 w-3" />
             {PLATFORM_LABELS[group.platform] ?? group.platform}
           </Badge>
+          {group.githubRepo && (
+            <Badge variant="secondary" className="bg-zinc-800 text-zinc-400 border-0 text-xs">
+              <Github className="mr-1 h-3 w-3" />
+              GitHub
+            </Badge>
+          )}
         </div>
 
         {currentMajors.length > 0 && (

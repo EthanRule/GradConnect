@@ -45,13 +45,13 @@ export function WhyTeamSection() {
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-16 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-violet-400">
+          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-amber-400">
             Why collaborate
           </p>
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
             Solo + AI is powerful.
             <br />
-            <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-400 to-amber-400 bg-clip-text text-transparent">
               Team + AI is unstoppable.
             </span>
           </h2>
@@ -66,10 +66,10 @@ export function WhyTeamSection() {
           {benefits.map((benefit) => (
             <div
               key={benefit.title}
-              className="group rounded-2xl border border-white/8 bg-white/3 p-6 transition-colors hover:border-violet-500/30 hover:bg-violet-600/5"
+              className="group rounded-2xl border border-white/8 bg-white/3 p-6 transition-colors hover:border-amber-500/30 hover:bg-amber-600/5"
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600/15">
-                <benefit.icon className="h-5 w-5 text-violet-400" />
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600/15">
+                <benefit.icon className="h-5 w-5 text-amber-400" />
               </div>
               <h3 className="mb-2 font-semibold text-white">{benefit.title}</h3>
               <p className="text-sm leading-relaxed text-zinc-400">{benefit.description}</p>
@@ -80,3 +80,4 @@ export function WhyTeamSection() {
     </section>
   )
 }
+

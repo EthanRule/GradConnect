@@ -115,7 +115,7 @@ export function CreateGroupForm() {
         </div>
         <div className="h-1 w-full overflow-hidden rounded-full bg-zinc-800">
           <div
-            className="h-full rounded-full bg-violet-600 transition-all"
+            className="h-full rounded-full bg-amber-600 transition-all"
             style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
           />
         </div>
@@ -134,7 +134,7 @@ export function CreateGroupForm() {
               onChange={(e) => set("name", e.target.value)}
               placeholder="e.g. AI Health Startup"
               maxLength={100}
-              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
             />
           </div>
 
@@ -150,7 +150,7 @@ export function CreateGroupForm() {
               placeholder="What's the vibe? What are you building?"
               maxLength={500}
               rows={3}
-              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500 resize-none"
+              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500 resize-none"
             />
           </div>
 
@@ -203,7 +203,7 @@ export function CreateGroupForm() {
                   onClick={() => set("aiUsage", opt.value)}
                   className={`rounded-xl border px-3 py-2.5 text-left text-sm transition-colors ${
                     form.aiUsage === opt.value
-                      ? "border-violet-500 bg-violet-600/20 text-violet-300"
+                      ? "border-amber-500 bg-amber-600/20 text-amber-300"
                       : "border-white/10 bg-zinc-800/60 text-zinc-400 hover:border-white/20 hover:text-white"
                   }`}
                 >
@@ -224,7 +224,7 @@ export function CreateGroupForm() {
               placeholder="Describe the project you have in mind. Your team will vote on ideas later — this is just to attract the right people."
               maxLength={1000}
               rows={5}
-              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500 resize-none"
+              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500 resize-none"
             />
             <p className="text-xs text-zinc-600">
               {form.initialProjectIdea.length} / 1000
@@ -251,7 +251,7 @@ export function CreateGroupForm() {
                   onClick={() => set("platform", p.value)}
                   className={`rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
                     form.platform === p.value
-                      ? "border-violet-500 bg-violet-600/20 text-violet-300"
+                      ? "border-amber-500 bg-amber-600/20 text-amber-300"
                       : "border-white/10 bg-zinc-800/60 text-zinc-400 hover:border-white/20 hover:text-white"
                   }`}
                 >
@@ -270,7 +270,7 @@ export function CreateGroupForm() {
               value={form.platformLink}
               onChange={(e) => set("platformLink", e.target.value)}
               placeholder="https://discord.gg/..."
-              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
             />
           </div>
 
@@ -283,7 +283,7 @@ export function CreateGroupForm() {
               value={form.githubRepo}
               onChange={(e) => set("githubRepo", e.target.value)}
               placeholder="https://github.com/yourteam/project"
-              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+              className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
             />
           </div>
         </div>
@@ -305,7 +305,7 @@ export function CreateGroupForm() {
           <Button
             onClick={() => setStep((s) => s + 1)}
             disabled={!canAdvance()}
-            className="bg-violet-600 hover:bg-violet-500 text-white"
+            className="bg-amber-600 hover:bg-amber-500 text-white"
           >
             Next
             <ChevronRight className="ml-1 h-4 w-4" />
@@ -314,7 +314,7 @@ export function CreateGroupForm() {
           <Button
             onClick={handleSubmit}
             disabled={!canAdvance() || loading}
-            className="bg-violet-600 hover:bg-violet-500 text-white"
+            className="bg-amber-600 hover:bg-amber-500 text-white"
           >
             {loading ? "Creating..." : "Create Team"}
           </Button>
@@ -323,3 +323,4 @@ export function CreateGroupForm() {
     </div>
   );
 }
+

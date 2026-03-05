@@ -41,13 +41,13 @@ export function MajorMultiSelect({ selected, onChange, label }: Props) {
             <Badge
               key={m}
               variant="secondary"
-              className="bg-violet-600/20 text-violet-300 border border-violet-500/30 text-xs gap-1 pr-1"
+              className="bg-amber-600/20 text-amber-300 border border-amber-500/30 text-xs gap-1 pr-1"
             >
               {m}
               <button
                 type="button"
                 onClick={() => remove(m)}
-                className="ml-0.5 rounded hover:text-violet-100"
+                className="ml-0.5 rounded hover:text-amber-100"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -64,7 +64,7 @@ export function MajorMultiSelect({ selected, onChange, label }: Props) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search fields or trades..."
-          className="w-full rounded-md border border-white/10 bg-zinc-800 py-1.5 pl-8 pr-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+          className="w-full rounded-md border border-white/10 bg-zinc-800 py-1.5 pl-8 pr-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
         />
       </div>
 
@@ -83,13 +83,13 @@ export function MajorMultiSelect({ selected, onChange, label }: Props) {
                 type="button"
                 onClick={() => toggle(m)}
                 className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-white/5 ${
-                  isSelected ? "text-violet-300" : "text-zinc-400"
+                  isSelected ? "text-amber-300" : "text-zinc-400"
                 }`}
               >
                 <div
                   className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
                     isSelected
-                      ? "border-violet-500 bg-violet-600"
+                      ? "border-amber-500 bg-amber-600"
                       : "border-white/20 bg-transparent"
                   }`}
                 >
@@ -104,3 +104,4 @@ export function MajorMultiSelect({ selected, onChange, label }: Props) {
     </div>
   );
 }
+

@@ -47,7 +47,7 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
       <Button
         onClick={() => setOpen(true)}
         variant="outline"
-        className="border-dashed border-violet-500/40 bg-violet-600/5 text-violet-300 hover:bg-violet-600/10 hover:text-violet-200 w-full"
+        className="border-dashed border-amber-500/40 bg-amber-600/5 text-amber-300 hover:bg-amber-600/10 hover:text-amber-200 w-full"
       >
         <Lightbulb className="mr-2 h-4 w-4" />
         Post a project idea
@@ -58,7 +58,7 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
   return (
     <form
       onSubmit={submit}
-      className="rounded-xl border border-violet-500/30 bg-violet-600/5 p-4 space-y-3"
+      className="rounded-xl border border-amber-500/30 bg-amber-600/5 p-4 space-y-3"
     >
       <div className="space-y-1.5">
         <Label htmlFor="idea-title" className="text-zinc-300 text-sm">
@@ -71,7 +71,7 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
           placeholder="e.g. AI-powered job application tracker"
           maxLength={150}
           required
-          className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+          className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
         />
       </div>
 
@@ -87,7 +87,7 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
           maxLength={1000}
           rows={3}
           required
-          className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500 resize-none"
+          className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500 resize-none"
         />
       </div>
 
@@ -103,7 +103,7 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
         <Button
           type="submit"
           disabled={loading || title.trim().length === 0 || description.trim().length < 10}
-          className="bg-violet-600 hover:bg-violet-500 text-white"
+          className="bg-amber-600 hover:bg-amber-500 text-white"
         >
           {loading ? "Posting..." : "Post idea"}
         </Button>
@@ -111,3 +111,4 @@ export function PostIdeaForm({ groupId }: { groupId: string }) {
     </form>
   )
 }
+

@@ -40,7 +40,8 @@ export async function GET(_req: Request, { params }: Params) {
   if (!group) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   // Strip inviteToken from public response — only exposed to creator on the page
-  const { inviteToken: _inviteToken, ...publicGroup } = group;
+  const { inviteToken, ...publicGroup } = group;
+  void inviteToken;
 
   return NextResponse.json(publicGroup);
 }

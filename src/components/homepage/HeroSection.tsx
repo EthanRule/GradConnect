@@ -7,9 +7,9 @@ export function HeroSection() {
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-zinc-950 px-4 pt-16">
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/3 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/10 blur-3xl" />
-        <div className="absolute left-1/4 top-2/3 h-[300px] w-[300px] rounded-full bg-pink-600/8 blur-3xl" />
-        <div className="absolute right-1/4 top-1/4 h-[250px] w-[250px] rounded-full bg-indigo-600/8 blur-3xl" />
+        <div className="absolute left-1/2 top-1/3 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-600/10 blur-3xl" />
+        <div className="absolute left-1/4 top-2/3 h-[300px] w-[300px] rounded-full bg-amber-600/8 blur-3xl" />
+        <div className="absolute right-1/4 top-1/4 h-[250px] w-[250px] rounded-full bg-amber-600/8 blur-3xl" />
       </div>
 
       {/* Grid overlay */}
@@ -24,7 +24,7 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-sm text-violet-300">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-sm text-amber-300">
           <Sparkles className="h-3.5 w-3.5" />
           <span>The AI opportunity is massive — and wide open</span>
         </div>
@@ -32,7 +32,7 @@ export function HeroSection() {
         {/* Headline */}
         <h1 className="mb-6 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
           The AI gold rush{" "}
-          <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 bg-clip-text text-transparent">
             is here.
           </span>
           <br />
@@ -52,7 +52,7 @@ export function HeroSection() {
           <Link href="/sign-up">
             <Button
               size="lg"
-              className="group h-12 gap-2 bg-violet-600 px-8 text-base hover:bg-violet-500 text-white"
+              className="group h-12 gap-2 bg-amber-600 px-8 text-base hover:bg-amber-500 text-white"
             >
               Build Your Team
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -80,3 +80,4 @@ export function HeroSection() {
     </section>
   )
 }
+

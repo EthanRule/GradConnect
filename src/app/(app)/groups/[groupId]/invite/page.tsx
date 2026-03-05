@@ -48,8 +48,8 @@ export default async function InvitePage({ params, searchParams }: Params) {
     <div className="flex min-h-[80vh] items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-violet-600/20">
-            <Users className="h-7 w-7 text-violet-400" />
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-600/20">
+            <Users className="h-7 w-7 text-amber-400" />
           </div>
 
           <h1 className="text-xl font-bold text-white">You&apos;re invited!</h1>
@@ -66,7 +66,7 @@ export default async function InvitePage({ params, searchParams }: Params) {
               {group.projectType && (
                 <Badge
                   variant="secondary"
-                  className="bg-violet-600/15 text-violet-300 border-0 text-xs"
+                  className="bg-amber-600/15 text-amber-300 border-0 text-xs"
                 >
                   {group.projectType}
                 </Badge>
@@ -117,3 +117,4 @@ export default async function InvitePage({ params, searchParams }: Params) {
     </div>
   );
 }
+

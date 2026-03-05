@@ -7,17 +7,17 @@ export function FinalCTA() {
     <section className="relative overflow-hidden bg-zinc-950 py-24 px-4">
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/2 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/10 blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-600/10 blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-3xl text-center">
-        <p className="mb-4 text-sm font-medium uppercase tracking-widest text-violet-400">
+        <p className="mb-4 text-sm font-medium uppercase tracking-widest text-amber-400">
           Stop waiting
         </p>
         <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl">
           Your team is out there.
           <br />
-          <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 bg-clip-text text-transparent">
             Your idea is waiting.
           </span>
         </h2>
@@ -31,7 +31,7 @@ export function FinalCTA() {
           <Link href="/sign-up">
             <Button
               size="lg"
-              className="group h-12 gap-2 bg-violet-600 px-10 text-base hover:bg-violet-500 text-white"
+              className="group h-12 gap-2 bg-amber-600 px-10 text-base hover:bg-amber-500 text-white"
             >
               Create Your Team Today
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -55,3 +55,4 @@ export function FinalCTA() {
     </section>
   );
 }
+

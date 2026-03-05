@@ -35,7 +35,7 @@ export function MemberCard({ member, kickButton }: MemberCardProps) {
     <div className="relative">
       {kickButton}
     <Link href={`/users/${user.id}`}>
-      <div className="group flex items-start gap-3 rounded-xl border border-white/10 bg-zinc-900/40 p-4 transition-colors hover:border-violet-500/30 hover:bg-violet-600/5">
+      <div className="group flex items-start gap-3 rounded-xl border border-white/10 bg-zinc-900/40 p-4 transition-colors hover:border-amber-500/30 hover:bg-amber-600/5">
         {/* Avatar */}
         <div className="relative shrink-0">
           {user.image ? (
@@ -47,7 +47,7 @@ export function MemberCard({ member, kickButton }: MemberCardProps) {
               className="rounded-full"
             />
           ) : (
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600/30 text-sm font-semibold text-violet-300">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-600/30 text-sm font-semibold text-amber-300">
               {initials}
             </div>
           )}
@@ -61,7 +61,7 @@ export function MemberCard({ member, kickButton }: MemberCardProps) {
         {/* Info */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <p className="truncate text-sm font-medium text-white group-hover:text-violet-300">
+            <p className="truncate text-sm font-medium text-white group-hover:text-amber-300">
               {user.name ?? "Anonymous"}
             </p>
           </div>
@@ -92,3 +92,4 @@ export function MemberCard({ member, kickButton }: MemberCardProps) {
     </div>
   )
 }
+

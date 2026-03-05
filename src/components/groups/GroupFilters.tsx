@@ -60,7 +60,7 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
             placeholder="Search teams..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 bg-zinc-900/60 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+            className="pl-9 bg-zinc-900/60 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
           />
         </div>
 
@@ -95,3 +95,4 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
     </div>
   );
 }
+

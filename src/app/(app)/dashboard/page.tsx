@@ -31,7 +31,7 @@ export default async function DashboardPage() {
           <p className="mt-1 text-sm text-zinc-400">Your teams and activity</p>
         </div>
         <Link href="/groups/new">
-          <Button className="bg-violet-600 hover:bg-violet-500 text-white">
+          <Button className="bg-amber-600 hover:bg-amber-500 text-white">
             <Plus className="mr-2 h-4 w-4" />
             New Team
           </Button>
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
               </Button>
             </Link>
             <Link href="/groups/new">
-              <Button className="bg-violet-600 hover:bg-violet-500 text-white">
+              <Button className="bg-amber-600 hover:bg-amber-500 text-white">
                 Create a Team
               </Button>
             </Link>
@@ -65,13 +65,13 @@ export default async function DashboardPage() {
         <div className="grid gap-4 sm:grid-cols-2">
           {memberships.map(({ group, role }) => (
             <Link key={group.id} href={`/groups/${group.id}`}>
-              <div className="group rounded-2xl border border-white/10 bg-zinc-900/60 p-5 transition-colors hover:border-violet-500/30 hover:bg-violet-600/5">
+              <div className="group rounded-2xl border border-white/10 bg-zinc-900/60 p-5 transition-colors hover:border-amber-500/30 hover:bg-amber-600/5">
                 <div className="flex items-start justify-between">
-                  <h3 className="font-semibold text-white group-hover:text-violet-300">
+                  <h3 className="font-semibold text-white group-hover:text-amber-300">
                     {group.name}
                   </h3>
                   {role === "CREATOR" && (
-                    <span className="rounded-full bg-violet-600/20 px-2 py-0.5 text-xs text-violet-300">
+                    <span className="rounded-full bg-amber-600/20 px-2 py-0.5 text-xs text-amber-300">
                       Creator
                     </span>
                   )}
@@ -94,3 +94,4 @@ export default async function DashboardPage() {
     </div>
   )
 }
+

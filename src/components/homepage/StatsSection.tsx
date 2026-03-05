@@ -26,7 +26,7 @@ export function StatsSection() {
     <section className="bg-zinc-950 py-20 px-4">
       <div className="mx-auto max-w-7xl">
         {/* Section label */}
-        <p className="mb-12 text-center text-sm font-medium uppercase tracking-widest text-violet-400">
+        <p className="mb-12 text-center text-sm font-medium uppercase tracking-widest text-amber-400">
           The opportunity is real
         </p>
 
@@ -46,3 +46,4 @@ export function StatsSection() {
     </section>
   )
 }
+

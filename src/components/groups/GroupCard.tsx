@@ -40,9 +40,9 @@ export function GroupCard({ group }: GroupCardProps) {
 
   return (
     <Link href={`/groups/${group.id}`}>
-      <div className="group h-full rounded-2xl border border-white/10 bg-zinc-900/60 p-5 transition-colors hover:border-violet-500/30 hover:bg-violet-600/5">
+      <div className="group h-full rounded-2xl border border-white/10 bg-zinc-900/60 p-5 transition-colors hover:border-amber-500/30 hover:bg-amber-600/5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-white group-hover:text-violet-300 line-clamp-1">
+          <h3 className="font-semibold text-white group-hover:text-amber-300 line-clamp-1">
             {group.name}
           </h3>
           <span
@@ -66,7 +66,7 @@ export function GroupCard({ group }: GroupCardProps) {
           {group.projectType && (
             <Badge
               variant="secondary"
-              className="bg-violet-600/15 text-violet-300 border-0 text-xs"
+              className="bg-amber-600/15 text-amber-300 border-0 text-xs"
             >
               {group.projectType}
             </Badge>
@@ -140,3 +140,4 @@ export function GroupCard({ group }: GroupCardProps) {
     </Link>
   )
 }
+

@@ -36,16 +36,16 @@ export function ProfileCard({ user, profile, isOwnProfile }: ProfileCardProps) {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Avatar className="h-16 w-16 ring-2 ring-violet-600/30">
+          <Avatar className="h-16 w-16 ring-2 ring-amber-600/30">
             <AvatarImage src={user.image ?? ""} alt={user.name ?? ""} />
-            <AvatarFallback className="bg-violet-700 text-white text-lg">
+            <AvatarFallback className="bg-amber-700 text-white text-lg">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div>
             <h2 className="text-xl font-semibold text-white">{user.name ?? "Anonymous"}</h2>
             {profile?.major && (
-              <p className="text-sm text-violet-400">{profile.major}</p>
+              <p className="text-sm text-amber-400">{profile.major}</p>
             )}
           </div>
         </div>
@@ -72,7 +72,7 @@ export function ProfileCard({ user, profile, isOwnProfile }: ProfileCardProps) {
       {!profile?.bio && isOwnProfile && (
         <p className="mt-4 text-sm italic text-zinc-600">
           No bio yet.{" "}
-          <Link href="/profile/edit" className="text-violet-400 hover:text-violet-300">
+          <Link href="/profile/edit" className="text-amber-400 hover:text-amber-300">
             Add one
           </Link>
         </p>
@@ -89,7 +89,7 @@ export function ProfileCard({ user, profile, isOwnProfile }: ProfileCardProps) {
               <Badge
                 key={skill}
                 variant="secondary"
-                className="bg-violet-600/15 text-violet-300 hover:bg-violet-600/25"
+                className="bg-amber-600/15 text-amber-300 hover:bg-amber-600/25"
               >
                 {skill}
               </Badge>
@@ -150,3 +150,4 @@ export function ProfileCard({ user, profile, isOwnProfile }: ProfileCardProps) {
     </div>
   )
 }
+

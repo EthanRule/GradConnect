@@ -106,7 +106,7 @@ export default async function GroupDetailPage({ params }: Params) {
             {group.projectType && (
               <Badge
                 variant="secondary"
-                className="bg-violet-600/15 text-violet-300 border-0"
+                className="bg-amber-600/15 text-amber-300 border-0"
               >
                 {group.projectType}
               </Badge>
@@ -151,7 +151,7 @@ export default async function GroupDetailPage({ params }: Params) {
           {!session?.user?.id && group.isOpen && (
             <Link href={`/sign-in?callbackUrl=/groups/${groupId}`}>
               <Button
-                className="bg-violet-600 hover:bg-violet-500 text-white"
+                className="bg-amber-600 hover:bg-amber-500 text-white"
                 size="sm"
               >
                 Join Team
@@ -239,7 +239,7 @@ export default async function GroupDetailPage({ params }: Params) {
               href={group.platformLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 p-3 text-sm text-violet-400 hover:text-violet-300 transition-colors"
+              className="mt-4 flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 p-3 text-sm text-amber-400 hover:text-amber-300 transition-colors"
             >
               <ExternalLink className="h-4 w-4" />
               Open {PLATFORM_LABELS[group.platform] ?? group.platform}
@@ -263,3 +263,4 @@ export default async function GroupDetailPage({ params }: Params) {
     </div>
   );
 }
+

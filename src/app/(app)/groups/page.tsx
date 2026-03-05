@@ -40,7 +40,7 @@ export default async function GroupsPage() {
           Find an open team that fits your skills, or{" "}
           <Link
             href="/groups/new"
-            className="text-violet-400 hover:text-violet-300"
+            className="text-amber-400 hover:text-amber-300"
           >
             create your own
           </Link>
@@ -64,3 +64,4 @@ export default async function GroupsPage() {
     </div>
   );
 }
+

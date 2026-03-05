@@ -34,14 +34,14 @@ export default async function ProfilePage() {
 
       {/* Prompt to complete profile if field/trade is empty */}
       {!user.profile?.major && (
-        <div className="mt-4 rounded-xl border border-violet-500/30 bg-violet-600/10 p-4">
-          <p className="text-sm text-violet-300">
+        <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-600/10 p-4">
+          <p className="text-sm text-amber-300">
             Complete your profile so teammates know what you bring to the table.
           </p>
           <Link href="/profile/edit">
             <Button
               size="sm"
-              className="mt-3 bg-violet-600 hover:bg-violet-500 text-white"
+              className="mt-3 bg-amber-600 hover:bg-amber-500 text-white"
             >
               Complete profile
             </Button>
@@ -61,7 +61,7 @@ export default async function ProfilePage() {
           </Button>
         </Link>
         <Link href="/groups/new">
-          <Button className="bg-violet-600 hover:bg-violet-500 text-white">
+          <Button className="bg-amber-600 hover:bg-amber-500 text-white">
             Create a Team
           </Button>
         </Link>
@@ -69,3 +69,4 @@ export default async function ProfilePage() {
     </div>
   );
 }
+

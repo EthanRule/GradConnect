@@ -51,7 +51,7 @@ export function InviteSection({ groupId, inviteToken: initialToken, isCreator }:
         <Input
           readOnly
           value={inviteUrl}
-          className="bg-zinc-800 border-white/10 text-zinc-400 text-xs font-mono focus-visible:ring-violet-500"
+          className="bg-zinc-800 border-white/10 text-zinc-400 text-xs font-mono focus-visible:ring-amber-500"
         />
         <Button
           variant="outline"
@@ -84,3 +84,4 @@ export function InviteSection({ groupId, inviteToken: initialToken, isCreator }:
     </div>
   )
 }
+

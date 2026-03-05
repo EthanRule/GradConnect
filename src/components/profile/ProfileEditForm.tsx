@@ -119,7 +119,7 @@ export function ProfileEditForm({ initialData }: Props) {
           onChange={(e) => set("name", e.target.value)}
           placeholder="Alex Johnson"
           required
-          className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+          className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
         />
       </div>
 
@@ -129,7 +129,7 @@ export function ProfileEditForm({ initialData }: Props) {
           Field / Trade <span className="text-red-400">*</span>
         </Label>
         <Select value={form.major} onValueChange={(v) => set("major", v)}>
-          <SelectTrigger className="border-white/15 bg-white/5 text-white focus:ring-violet-500">
+          <SelectTrigger className="border-white/15 bg-white/5 text-white focus:ring-amber-500">
             <SelectValue placeholder="Select your field or trade..." />
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto">
@@ -154,7 +154,7 @@ export function ProfileEditForm({ initialData }: Props) {
           placeholder="Tell your team what you're about and what you want to build..."
           maxLength={500}
           rows={3}
-          className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500 resize-none"
+          className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500 resize-none"
         />
         <p className="text-right text-xs text-zinc-600">
           {form.bio.length}/500
@@ -170,7 +170,7 @@ export function ProfileEditForm({ initialData }: Props) {
             onChange={(e) => setSkillInput(e.target.value)}
             onKeyDown={handleSkillKeyDown}
             placeholder="e.g. React, Python, Figma — press Enter to add"
-            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
           />
           <Button
             type="button"
@@ -187,7 +187,7 @@ export function ProfileEditForm({ initialData }: Props) {
               <Badge
                 key={skill}
                 variant="secondary"
-                className="gap-1 bg-violet-600/15 text-violet-300"
+                className="gap-1 bg-amber-600/15 text-amber-300"
               >
                 {skill}
                 <button
@@ -219,7 +219,7 @@ export function ProfileEditForm({ initialData }: Props) {
               value={form.github}
               onChange={(e) => set("github", e.target.value)}
               placeholder="https://github.com/username"
-              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
             />
           </div>
           <div className="space-y-1.5">
@@ -231,7 +231,7 @@ export function ProfileEditForm({ initialData }: Props) {
               value={form.linkedin}
               onChange={(e) => set("linkedin", e.target.value)}
               placeholder="https://linkedin.com/in/username"
-              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
             />
           </div>
           <div className="space-y-1.5">
@@ -243,7 +243,7 @@ export function ProfileEditForm({ initialData }: Props) {
               value={form.twitter}
               onChange={(e) => set("twitter", e.target.value)}
               placeholder="https://x.com/username"
-              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
             />
           </div>
           <div className="space-y-1.5">
@@ -255,7 +255,7 @@ export function ProfileEditForm({ initialData }: Props) {
               value={form.website}
               onChange={(e) => set("website", e.target.value)}
               placeholder="https://yoursite.com"
-              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+              className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
             />
           </div>
         </div>
@@ -263,7 +263,7 @@ export function ProfileEditForm({ initialData }: Props) {
 
       <Button
         type="submit"
-        className="w-full bg-violet-600 hover:bg-violet-500 text-white"
+        className="w-full bg-amber-600 hover:bg-amber-500 text-white"
         disabled={saving}
       >
         {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -272,3 +272,4 @@ export function ProfileEditForm({ initialData }: Props) {
     </form>
   );
 }
+

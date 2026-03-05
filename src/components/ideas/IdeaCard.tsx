@@ -78,7 +78,7 @@ export function IdeaCard({
           disabled={loading || !currentUserId}
           className={`flex shrink-0 flex-col items-center gap-0.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             voted
-              ? "bg-violet-600/25 text-violet-300"
+              ? "bg-amber-600/25 text-amber-300"
               : "bg-zinc-800/60 text-zinc-500 hover:bg-zinc-800 hover:text-white"
           } disabled:cursor-not-allowed`}
           title={
@@ -89,7 +89,7 @@ export function IdeaCard({
               : "Sign in to vote"
           }
         >
-          <ThumbsUp className={`h-4 w-4 ${voted ? "fill-violet-400" : ""}`} />
+          <ThumbsUp className={`h-4 w-4 ${voted ? "fill-amber-400" : ""}`} />
           <span className="text-xs">{count}</span>
         </button>
 
@@ -122,7 +122,7 @@ export function IdeaCard({
                 className="rounded-full"
               />
             ) : (
-              <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-violet-600/30 text-[10px] font-semibold text-violet-300">
+              <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-amber-600/30 text-[10px] font-semibold text-amber-300">
                 {initials}
               </div>
             )}
@@ -135,3 +135,4 @@ export function IdeaCard({
     </div>
   );
 }
+

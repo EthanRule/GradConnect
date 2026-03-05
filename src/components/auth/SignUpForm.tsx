@@ -116,7 +116,7 @@ export function SignUpForm() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
           />
         </div>
         <div className="space-y-2">
@@ -128,7 +128,7 @@ export function SignUpForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
           />
         </div>
         <div className="space-y-2">
@@ -140,12 +140,12 @@ export function SignUpForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-violet-500"
+            className="border-white/15 bg-white/5 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500"
           />
         </div>
         <Button
           type="submit"
-          className="w-full bg-violet-600 hover:bg-violet-500 text-white"
+          className="w-full bg-amber-600 hover:bg-amber-500 text-white"
           disabled={loading}
         >
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -155,7 +155,7 @@ export function SignUpForm() {
 
       <p className="text-center text-sm text-zinc-500">
         Already have an account?{" "}
-        <Link href="/sign-in" className="text-violet-400 hover:text-violet-300">
+        <Link href="/sign-in" className="text-amber-400 hover:text-amber-300">
           Sign in
         </Link>
       </p>
@@ -166,3 +166,4 @@ export function SignUpForm() {
     </div>
   )
 }
+

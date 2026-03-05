@@ -30,7 +30,7 @@ export function HowItWorksSection() {
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-16 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-violet-400">
+          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-amber-400">
             Simple by design
           </p>
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
@@ -45,7 +45,7 @@ export function HowItWorksSection() {
         {/* Steps */}
         <div className="relative">
           {/* Connector line (desktop) */}
-          <div className="absolute left-0 right-0 top-12 hidden h-px bg-gradient-to-r from-transparent via-violet-600/30 to-transparent lg:block" />
+          <div className="absolute left-0 right-0 top-12 hidden h-px bg-gradient-to-r from-transparent via-amber-600/30 to-transparent lg:block" />
 
           <div className="grid gap-8 lg:grid-cols-3">
             {steps.map((step) => (
@@ -54,9 +54,9 @@ export function HowItWorksSection() {
                 className="relative flex flex-col items-center text-center"
               >
                 {/* Icon circle */}
-                <div className="relative mb-6 flex h-24 w-24 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-600/10">
-                  <step.icon className="h-10 w-10 text-violet-400" />
-                  <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-bold text-white">
+                <div className="relative mb-6 flex h-24 w-24 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-600/10">
+                  <step.icon className="h-10 w-10 text-amber-400" />
+                  <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-amber-600 text-xs font-bold text-white">
                     {step.number.replace("0", "")}
                   </span>
                 </div>
@@ -75,3 +75,4 @@ export function HowItWorksSection() {
     </section>
   );
 }
+

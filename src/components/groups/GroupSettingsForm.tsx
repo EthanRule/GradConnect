@@ -127,7 +127,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             onChange={(e) => set("name", e.target.value)}
             maxLength={100}
             required
-            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
           />
         </div>
 
@@ -141,7 +141,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             onChange={(e) => set("description", e.target.value)}
             maxLength={500}
             rows={3}
-            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500 resize-none"
+            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500 resize-none"
           />
         </div>
 
@@ -156,7 +156,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             maxLength={1000}
             rows={4}
             required
-            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500 resize-none"
+            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500 resize-none"
           />
         </div>
 
@@ -189,7 +189,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
                 onClick={() => set("aiUsage", opt.value)}
                 className={`rounded-xl border px-3 py-2.5 text-left text-sm transition-colors ${
                   form.aiUsage === opt.value
-                    ? "border-violet-500 bg-violet-600/20 text-violet-300"
+                    ? "border-amber-500 bg-amber-600/20 text-amber-300"
                     : "border-white/10 bg-zinc-800/60 text-zinc-400 hover:border-white/20 hover:text-white"
                 }`}
               >
@@ -231,7 +231,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             value={form.githubRepo}
             onChange={(e) => set("githubRepo", e.target.value)}
             placeholder="https://github.com/yourteam/project"
-            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
           />
         </div>
 
@@ -250,7 +250,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             value={form.platformLink}
             onChange={(e) => set("platformLink", e.target.value)}
             placeholder="https://discord.gg/..."
-            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+            className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-amber-500"
           />
         </div>
       </div>
@@ -258,7 +258,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-violet-600 hover:bg-violet-500 text-white"
+        className="w-full bg-amber-600 hover:bg-amber-500 text-white"
       >
         {loading ? "Saving..." : "Save changes"}
       </Button>
@@ -283,3 +283,4 @@ export function GroupSettingsForm({ group }: { group: Group }) {
     </form>
   );
 }
+

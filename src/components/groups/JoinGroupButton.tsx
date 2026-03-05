@@ -38,10 +38,11 @@ export function JoinGroupButton({ groupId, token }: { groupId: string; token?: s
     <Button
       onClick={join}
       disabled={loading}
-      className="bg-violet-600 hover:bg-violet-500 text-white"
+      className="bg-amber-600 hover:bg-amber-500 text-white"
       size="sm"
     >
       {loading ? "Joining..." : "Join Team"}
     </Button>
   )
 }
+

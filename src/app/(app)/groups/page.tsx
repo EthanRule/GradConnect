@@ -8,11 +8,20 @@ export const metadata = { title: "Browse Teams — GradConnect" }
 export default async function GroupsPage() {
   const groups = await db.group.findMany({
     where: { isOpen: true },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      platform: true,
+      projectType: true,
+      isOpen: true,
+      maxMembers: true,
+      maxPerMajor: true,
+      lookingForMajors: true,
       _count: { select: { members: true } },
       members: {
-        include: {
-          user: { include: { profile: { select: { major: true } } } },
+        select: {
+          user: { select: { profile: { select: { major: true } } } },
         },
         orderBy: { joinedAt: "asc" },
       },

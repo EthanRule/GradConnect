@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select"
 import { PROJECT_TYPES } from "@/lib/validations"
 import { Separator } from "@/components/ui/separator"
+import { MajorMultiSelect } from "@/components/groups/MajorMultiSelect"
 
 const PLATFORMS = [
   { value: "DISCORD", label: "Discord" },
@@ -33,12 +34,14 @@ type Group = {
   projectType: string | null
   platform: string
   platformLink: string | null
+  lookingForMajors: string[]
 }
 
 export function GroupSettingsForm({ group }: { group: Group }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [lookingForMajors, setLookingForMajors] = useState<string[]>(group.lookingForMajors)
   const [form, setForm] = useState({
     name: group.name,
     description: group.description ?? "",
@@ -66,6 +69,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
           projectType: form.projectType || undefined,
           platform: form.platform,
           platformLink: form.platformLink || undefined,
+          lookingForMajors,
         }),
       })
       const data = await res.json()
@@ -147,7 +151,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             <SelectTrigger className="bg-zinc-800 border-white/10 text-white">
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
-            <SelectContent className="bg-zinc-900 border-white/10 text-white">
+            <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
               {PROJECT_TYPES.map((t) => (
                 <SelectItem key={t} value={t} className="focus:bg-white/10">{t}</SelectItem>
               ))}
@@ -161,7 +165,7 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             <SelectTrigger className="bg-zinc-800 border-white/10 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-zinc-900 border-white/10 text-white">
+            <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
               {PLATFORMS.map((p) => (
                 <SelectItem key={p.value} value={p.value} className="focus:bg-white/10">
                   {p.label}
@@ -170,6 +174,12 @@ export function GroupSettingsForm({ group }: { group: Group }) {
             </SelectContent>
           </Select>
         </div>
+
+        <MajorMultiSelect
+          label="Looking for these majors"
+          selected={lookingForMajors}
+          onChange={setLookingForMajors}
+        />
 
         <div className="space-y-1.5">
           <Label htmlFor="link" className="text-zinc-300">Platform invite link</Label>

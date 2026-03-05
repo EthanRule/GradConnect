@@ -22,6 +22,7 @@ type Group = {
   isOpen: boolean
   maxMembers: number
   maxPerMajor: number
+  lookingForMajors: string[]
   _count: { members: number }
   members: {
     user: {
@@ -65,7 +66,7 @@ export function GroupFilters({ groups }: { groups: Group[] }) {
           <SelectTrigger className="w-full sm:w-56 bg-zinc-900/60 border-white/10 text-white">
             <SelectValue placeholder="Filter by your major" />
           </SelectTrigger>
-          <SelectContent className="bg-zinc-900 border-white/10 text-white">
+          <SelectContent className="max-h-60 overflow-y-auto bg-zinc-900 border-white/10 text-white">
             <SelectItem value="all" className="focus:bg-white/10">
               All majors
             </SelectItem>

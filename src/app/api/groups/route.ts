@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     )
   }
 
-  const { name, description, initialProjectIdea, projectType, platform, platformLink } =
+  const { name, description, initialProjectIdea, projectType, platform, platformLink, lookingForMajors } =
     parsed.data
 
   const group = await db.group.create({
@@ -67,6 +67,7 @@ export async function POST(req: Request) {
       projectType,
       platform,
       platformLink,
+      lookingForMajors: lookingForMajors ?? [],
       members: {
         create: {
           userId: session.user.id,

@@ -143,7 +143,7 @@ export function ProfileEditForm({ initialData }: Props) {
           <SelectTrigger className="border-white/15 bg-white/5 text-white focus:ring-violet-500">
             <SelectValue placeholder="Select your major..." />
           </SelectTrigger>
-          <SelectContent className="max-h-72">
+          <SelectContent className="max-h-60 overflow-y-auto">
             {MAJOR_OPTIONS.map((major) => (
               <SelectItem key={major} value={major}>
                 {major}
